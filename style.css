@@ -1,0 +1,61 @@
+<style>
+
+
+a:link {
+	color: green;
+	background-color: transparent;
+	text-decoration: none;
+}
+
+a:visited {
+	color: green;
+	background-color: transparent;
+	text-decoration: none;
+}
+
+a:hover {
+	color: dodgerblue;
+	background-color: transparent;
+	text-decoration: underline;
+}
+
+a:active {
+	color: orange;
+	background-color: transparent;
+	text-decoration: underline;
+}
+
+table, th, td{
+	border: 1px solid black;
+	border-radius: 0px;
+	border-collapse: collapse;
+}
+
+td, th{
+	text-align: center
+}
+
+td{
+	padding: 10px;
+}
+
+th{
+	text-decoration: underline;
+	
+}
+
+table {
+	border-style: double;
+	background-color:white
+}
+
+td:hover::before {
+	background-color: #D6EEEE;
+}
+
+td:hover::after {
+	background-color: #D6EEEE;
+}
+
+
+</style>
