@@ -49,13 +49,11 @@ table {
 	background-color:white
 }
 
-td:hover::before {
+tr:hover {
 	background-color: #D6EEEE;
 }
 
-td:hover::after {
-	background-color: #D6EEEE;
-}
+
 
 
 </style>
