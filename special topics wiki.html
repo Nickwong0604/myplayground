@@ -1,0 +1,1887 @@
+<!DOCTYPE html><html lang="en"><head><meta name="x-poe-datastore-behavior" content="local_only"><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
+  <meta charset="UTF-8">
+  <title>Western Art Mini‑Wiki – New Lectures (Body, Patronage, Context, Gender, 21C)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root {
+      --bg: #f8f8fa;
+      --sidebar-bg: #232946;
+      --sidebar-text: #fefefe;
+      --sidebar-accent: #eebbc3;
+      --sidebar-hover: #1b2035;
+      --content-bg: #ffffff;
+      --text-main: #222222;
+      --border-subtle: #dddddd;
+      --link: #1f6feb;
+      --link-hover: #174a9c;
+      --muted: #666666;
+      --heading: #111827;
+      --badge-bg: #eef2ff;
+      --badge-text: #3730a3;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+    }
+
+    a {
+      color: var(--link);
+      text-decoration: none;
+    }
+    a:hover {
+      color: var(--link-hover);
+      text-decoration: underline;
+    }
+
+    .app-shell {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Sidebar */
+
+    .sidebar {
+      width: 270px;
+      flex-shrink: 0;
+      background: var(--sidebar-bg);
+      color: var(--sidebar-text);
+      display: flex;
+      flex-direction: column;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .sidebar-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .sidebar-title {
+      font-weight: 700;
+      font-size: 1rem;
+      line-height: 1.3;
+    }
+
+    .sidebar-subtitle {
+      font-size: 0.78rem;
+      opacity: 0.75;
+    }
+
+    .sidebar-menu-toggle {
+      display: none;
+      background: none;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 6px;
+      color: var(--sidebar-text);
+      padding: 0.2rem 0.4rem;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    .sidebar-section-title {
+      text-transform: uppercase;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      opacity: 0.8;
+      padding: 0.75rem 1.1rem 0.25rem;
+    }
+
+    .nav-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 0.5rem;
+    }
+
+    .nav-item { margin: 0; }
+
+    .nav-link {
+      display: block;
+      padding: 0.35rem 1.1rem;
+      font-size: 0.86rem;
+      color: var(--sidebar-text);
+      opacity: 0.9;
+      border-left: 3px solid transparent;
+      text-decoration: none;
+    }
+
+    .nav-link:hover {
+      background: var(--sidebar-hover);
+      opacity: 1;
+      text-decoration: none;
+    }
+
+    .nav-link.active {
+      border-left-color: var(--sidebar-accent);
+      background: rgba(255, 255, 255, 0.05);
+      opacity: 1;
+      font-weight: 600;
+    }
+
+    .nav-link small {
+      font-size: 0.7rem;
+      opacity: 0.8;
+    }
+
+    /* Mobile */
+
+    @media (max-width: 768px) {
+      .sidebar {
+        position: fixed;
+        z-index: 20;
+        left: 0;
+        top: 0;
+        transform: translateX(-100%);
+        transition: transform 0.2s ease-out;
+        height: 100%;
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .sidebar-header { padding-right: 0.6rem; }
+
+      .sidebar-menu-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .content { margin-left: 0; }
+
+      .content-header-mobile {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: var(--content-bg);
+        border-bottom: 1px solid var(--border-subtle);
+        padding: 0.4rem 0.8rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .content-header-mobile button {
+        border-radius: 6px;
+        border: 1px solid #d1d5db;
+        background: #f9fafb;
+        padding: 0.2rem 0.5rem;
+        font-size: 0.85rem;
+      }
+    }
+
+    /* Content */
+
+    .content {
+      flex: 1;
+      padding: 1.25rem 1.5rem 2rem;
+      max-width: 1040px;
+      margin: 0 auto;
+    }
+
+    .page { display: none; }
+    .page.active { display: block; }
+
+    h1, h2, h3, h4 { color: var(--heading); }
+
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 0.4rem;
+    }
+
+    h2 {
+      font-size: 1.3rem;
+      margin-top: 1.6rem;
+      margin-bottom: 0.3rem;
+    }
+
+    h3 {
+      font-size: 1.05rem;
+      margin-top: 1.1rem;
+      margin-bottom: 0.25rem;
+    }
+
+    p {
+      line-height: 1.6;
+      margin: 0.4rem 0 0.6rem;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.15rem 0.45rem;
+      border-radius: 999px;
+      background: var(--badge-bg);
+      color: var(--badge-text);
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-left: 0.3rem;
+    }
+
+    .card {
+      background: var(--content-bg);
+      border-radius: 10px;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+      border: 1px solid var(--border-subtle);
+      padding: 0.9rem 1rem;
+      margin: 0.5rem 0 1rem;
+    }
+
+    ul { margin-top: 0.2rem; }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 0.4rem 0 0.8rem;
+      font-size: 0.9rem;
+    }
+    th, td {
+      border: 1px solid var(--border-subtle);
+      padding: 0.35rem 0.5rem;
+      vertical-align: top;
+    }
+    th { background: #f3f4ff; }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div>
+          <div class="sidebar-title">Western Art Mini‑Wiki</div>
+          <div class="sidebar-subtitle">New Lectures: Body, Patronage, Context, Gender, 21C</div>
+        </div>
+        <button class="sidebar-menu-toggle" onclick="toggleSidebar()">☰</button>
+      </div>
+
+      <div class="sidebar-section-title">Overview</div>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a href="#page-home" class="nav-link active" data-page="home">Home · How to Use</a>
+        </li>
+      </ul>
+
+      <div class="sidebar-section-title">The Human Body</div>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a href="#page-body-nude-naked" class="nav-link" data-page="body-nude-naked">
+            Naked vs Nude &amp; Classical Canon
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#page-body-female-venus" class="nav-link" data-page="body-female-venus">
+            Venus &amp; Female Nude: From Fertility to Modernity
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#page-body-morality" class="nav-link" data-page="body-morality">
+            Christian Morality &amp; the Body
+          </a>
+        </li>
+      </ul>
+
+      <div class="sidebar-section-title">Artist &amp; Patronage</div>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a href="#page-artist-status" class="nav-link" data-page="artist-status">
+            Status of the Artist · From Craftsperson to Genius
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#page-patronage-renaissance-baroque" class="nav-link" data-page="patronage-renaissance-baroque">
+            Patronage: Church, Court &amp; Merchant Families
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#page-modern-patronage-market" class="nav-link" data-page="modern-patronage-market">
+            Modern &amp; Contemporary Patronage &amp; Market
+          </a>
+        </li>
+      </ul>
+
+      <div class="sidebar-section-title">Social &amp; Historical Contexts</div>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a href="#page-english-french-18-19" class="nav-link" data-page="english-french-18-19">
+            18–19C England &amp; France: Politics &amp; City Life
+          </a>
+        </li>
+      </ul>
+
+      <div class="sidebar-section-title">Gender &amp; Ethnicity</div>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a href="#page-gender-male-gaze" class="nav-link" data-page="gender-male-gaze">
+            Gender Stereotypes &amp; the Male Gaze
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#page-feminist-art" class="nav-link" data-page="feminist-art">
+            Feminist Art: Reclaiming the Image of Woman
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#page-ethnicity-orientalism" class="nav-link" data-page="ethnicity-orientalism">
+            Ethnicity, Orientalism &amp; Primitivism
+          </a>
+        </li>
+      </ul>
+
+      <div class="sidebar-section-title">Art in the 21st Century</div>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a href="#page-art-market-21c" class="nav-link" data-page="art-market-21c">
+            Global Art Market, Media &amp; Value
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#page-digital-immersive" class="nav-link" data-page="digital-immersive">
+            Digital Media, Immersive Art &amp; Museums
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Content -->
+    <main class="content">
+      <div class="content-header-mobile">
+        <div style="font-size:0.9rem;font-weight:600;">Western Art Mini‑Wiki</div>
+        <button onclick="toggleSidebar()">☰ Menu</button>
+      </div>
+
+      <!-- HOME -->
+      <section id="page-home" class="page active">
+        <h1>Western Art Mini‑Wiki · New Lecture Set</h1>
+        <p class="muted">
+          This mini‑wiki condenses your recent lectures:
+          <strong>The Human Body</strong>, <strong>The Artist &amp; Patronage</strong>,
+          <strong>Social &amp; Historical Contexts</strong>, <strong>Gender &amp; Ethnicity</strong>, and
+          <strong>Rethinking Art in the 21st Century</strong>.
+          It is written in exam‑oriented language.
+        </p>
+
+        <div class="card">
+          <h3>How to Use This File <span class="badge">Exam</span></h3>
+          <ul>
+            <li>Use the sidebar to jump by <strong>theme</strong>:
+              <ul>
+                <li>Body &amp; nudity, gender and race, patronage and art market, modern city &amp; class, digital/immersive art.</li>
+              </ul>
+            </li>
+            <li>Each page pulls together:
+              <ul>
+                <li><strong>Key concepts and definitions</strong> (good for Section A questions).</li>
+                <li><strong>Representative artworks with interpretation</strong> (good for Section B essays).</li>
+              </ul>
+            </li>
+            <li>When revising:
+              <ul>
+                <li>Note how <strong>social context</strong> (politics, gender roles, technology, economics) affects style and subject.</li>
+                <li>Practice linking <strong>older art</strong> (e.g. Botticelli, Goya) to <strong>contemporary debates</strong> about the body, identity, and value.</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- THE HUMAN BODY: NAKED VS NUDE, CANON -->
+
+      <section id="page-body-nude-naked" class="page">
+        <h1>The Human Body 1: Naked vs Nude &amp; Classical Canon</h1>
+
+        <h2>Key Distinction: Naked vs Nude</h2>
+        <ul>
+          <li><strong>Naked</strong>
+            <ul>
+              <li>Simply <strong>without clothes</strong>; an unidealized individual body.</li>
+              <li>Linked to <strong>mundane reality</strong>, exposure, vulnerability.</li>
+              <li>Connotations: <strong>embarrassment, shame, abnormality</strong>.</li>
+            </ul>
+          </li>
+          <li><strong>Nude</strong> (term gains its art‑historical meaning in 18th c.)
+            <ul>
+              <li>A <strong>balanced, perfect, “pure” condition</strong>.</li>
+              <li><strong>Idealized, depersonalized</strong> image = a <strong>standard of beauty</strong>, not a specific person.</li>
+              <li>Connotations: <strong>pride, confidence, pleasure</strong>.</li>
+            </ul>
+          </li>
+          <li>The <strong>nude as an art form</strong> is <strong>invented in Classical Greece (5th c. BC)</strong> with the <strong>Classical Canon</strong>.</li>
+        </ul>
+
+        <h2>Early Greek Pride in the Male Body</h2>
+        <h3>Minoan &amp; Pre‑classical Background</h3>
+        <ul>
+          <li><strong>Fisherman with his Catch</strong>, c. 1600–1500 BC, Minoan fresco, Santorini.
+            <ul>
+              <li>Shows an early <strong>male nude</strong>.</li>
+              <li>Indicates that <strong>Greek culture valued the male body</strong> even before the Classical period.</li>
+            </ul>
+          </li>
+          <li>Ancient Greek attitudes:
+            <ul>
+              <li>Pride in physical beauty; gymnasium culture.</li>
+              <li>Plato: love between young men is “nobler” and more natural than heterosexual love → helps explain focus on the <strong>ideal male body</strong>.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>The Classical Canon of the Male Nude</h2>
+        <h3>Doryphoros (Spear Bearer)</h3>
+        <ul>
+          <li><strong>Doryphoros</strong> (Spear Carrier), Polykleitos, 450–440 BC, Roman marble copy of Greek bronze.</li>
+          <li>Embodies the <strong>Classical Canon</strong>:
+            <ul>
+              <li><strong>Contrapposto</strong>: weight on one leg, balanced tilt of hips and shoulders.</li>
+              <li><strong>Harmony</strong> and <strong>proportion</strong> (e.g. head ≈ 1/8 of total height).</li>
+              <li>Organic, naturalistic, yet idealized: a figure at rest but “ready for action”.</li>
+            </ul>
+          </li>
+          <li>Underlying idea: <strong>beauty of the body reflects goodness of the soul</strong>; physical perfection implies moral and divine qualities.</li>
+        </ul>
+
+        <h3>Discobolus (Discus Thrower)</h3>
+        <ul>
+          <li><strong>Discobolus</strong>, 460–450 BC, Roman marble copy.</li>
+          <li>Shows the <strong>athletic version</strong> of the ideal male nude:
+            <ul>
+              <li><strong>Restrained dynamism</strong>: movement is frozen at a balanced moment.</li>
+              <li>Smooth, polished outline → <strong>artificial, ideal beauty</strong>, not a real athlete.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>Vitruvian Man &amp; Proportion</h2>
+        <ul>
+          <li><strong>Vitruvian Man</strong>, Leonardo da Vinci, 1485–90, ink on paper.
+            <ul>
+              <li>Illustrates Vitruvius’s theory in <em>De Architectura</em> (Book III).</li>
+              <li>Body inscribed in circle and square → <strong>microcosm of the universe</strong>.</li>
+              <li>Renaissance re‑uses Classical ideas: <strong>mathematics &amp; geometry</strong> explain bodily beauty.</li>
+            </ul>
+          </li>
+          <li>Not all Renaissance scholars produced satisfactory illustrations; Leonardo’s version becomes the standard.</li>
+        </ul>
+
+        <h2>Androgynous Ideal</h2>
+        <ul>
+          <li><strong>Death of Joseph Bara</strong>, David, c. 1794.
+            <ul>
+              <li>French Neoclassicism → <strong>androgyny</strong> (boyish, soft body) as symbol of purity.</li>
+              <li>Fourteen‑year‑old revolutionary martyr: <strong>youthful beauty = political virtue</strong>.</li>
+            </ul>
+          </li>
+          <li>Classical male nude remains the <strong>aesthetic ideal</strong> (heroes, athletes, gods) until the 17th c.; by the 19th c. it is largely <strong>replaced by the female nude</strong>.</li>
+        </ul>
+      </section>
+
+      <!-- THE HUMAN BODY: FEMALE / VENUS -->
+
+      <section id="page-body-female-venus" class="page">
+        <h1>The Human Body 2: Venus &amp; the Female Nude</h1>
+
+        <h2>From Fertility Figurines to Classical Venus</h2>
+        <h3>Prehistoric “Venus” Figures</h3>
+        <ul>
+          <li>Venus of Hohle Fels (ivory), Venus of Dolní Věstonice (ceramic), Venus of Willendorf (limestone), c. 35,000–24,000 BC.</li>
+          <li>Exaggerated breasts, belly, hips → <strong>fertility and abundance</strong>.</li>
+          <li>Show that <strong>female nudity linked to fertility cults</strong> across prehistoric Europe.</li>
+        </ul>
+
+        <h3>Greek Women Before Venus</h3>
+        <ul>
+          <li><strong>Kore</strong>, c. 520 BC, Athenian Acropolis:
+            <ul>
+              <li>Always clothed; garments = <strong>modesty and domestic role</strong>.</li>
+            </ul>
+          </li>
+          <li><strong>Caryatids</strong>, Erechtheion, Acropolis, 5th c. BC:
+            <ul>
+              <li>Female figures used as architectural supports.</li>
+              <li>Commemorate defeat of Caryae → <strong>symbol of humiliation</strong>, though stylistically naturalistic.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>Birth of the Nude Goddess</h2>
+        <ul>
+          <li>Ancient Greek women had <strong>subordinate status</strong>; full female nudity appears only from the 4th c. BC.</li>
+          <li>Influence from <strong>Near Eastern / Oriental cults</strong>.</li>
+          <li><strong>Aphrodite/Venus</strong> = first fully nude goddess; becomes generic term for <strong>ideal female nudity</strong>.</li>
+          <li>Plato: <strong>two Venuses</strong>:
+            <ul>
+              <li><strong>Celestial Venus</strong> – spiritual, ideal beauty.</li>
+              <li><strong>Vulgar Venus</strong> – physical, object of desire.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>Classical &amp; Roman Venus Types</h2>
+        <h3>Wet Drapery &amp; Venus Pudica</h3>
+        <ul>
+          <li><strong>Aphrodite of Fréjus (Venus Genetrix)</strong>, Roman copy:
+            <ul>
+              <li><strong>Wet drapery</strong> clings to the body, revealing rather than covering.</li>
+              <li>Heightens eroticism while keeping a “respectable” mythological context.</li>
+            </ul>
+          </li>
+          <li><strong>Cnidian Aphrodite</strong> (Praxiteles), Roman copy:
+            <ul>
+              <li>First <strong>life‑size female nude</strong> in Greek art.</li>
+              <li>Uses Classical canon: 8 heads high, contrapposto.</li>
+              <li><strong>Venus pudica</strong> type: gesture of covering genitals while being seen → both modest and erotic.</li>
+            </ul>
+          </li>
+          <li><strong>Capitoline Venus</strong>, Roman copy:
+            <ul>
+              <li>Forward‑bending, self‑protective pose intensifies both <strong>defence and sexuality</strong>.</li>
+              <li>Awareness of “intruder” = <strong>male viewer/voyeur</strong>.</li>
+              <li>Sits between <strong>nudity and nakedness</strong>; ideal yet exposed.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h3>Roman Reclining Venus</h3>
+        <ul>
+          <li><strong>Reclining Venus, House of Venus, Pompeii</strong>, wall painting:
+            <ul>
+              <li>Scene of Venus’s birth; <strong>reclining type</strong> that later Renaissance art revives.</li>
+              <li>Shawl billows like drapery; emphasizes <strong>divine love</strong> yet also sensual form.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>Renaissance Re‑spiritualisation &amp; Re‑eroticisation</h2>
+        <h3>Botticelli’s Spiritual Venus</h3>
+        <ul>
+          <li><strong>Birth of Venus</strong>, 1483–85; <strong>Venus</strong>, c. 1482.
+            <ul>
+              <li>Early Renaissance attempt to capture <strong>spiritual, ideal female beauty</strong>.</li>
+              <li>Linked to <strong>Medici circle discussions of Platonic love</strong> (spiritual vs physical).</li>
+              <li>Girlish innocence, dreamy expression, other‑worldliness.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h3>Venetian Colour &amp; Sensuality</h3>
+        <ul>
+          <li><strong>Sacred and Profane Love</strong>, Titian, 1515:
+            <ul>
+              <li>Two women as <strong>terrestrial (profane) and celestial (sacred) Venus</strong>.</li>
+              <li>Uses allegory of love as marriage gift: sacred love is “higher”, but profane love addresses viewer directly.</li>
+            </ul>
+          </li>
+          <li><strong>Sleeping Venus</strong>, c. 1510:
+            <ul>
+              <li>Early <strong>reclining Venus type</strong> → man and nature in harmony.</li>
+              <li>Unites terrestrial and celestial Venus.</li>
+            </ul>
+          </li>
+          <li><strong>Venus of Urbino</strong>, 1538:
+            <ul>
+              <li>Now clearly a <strong>courtesan</strong>, not a goddess.</li>
+              <li>Direct gaze and relaxed nudity = <strong>seductive, inviting</strong>.</li>
+              <li>Indicates <strong>rise of eroticism</strong> in high art.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>From “High Art Taste” to Explicit Eroticism</h2>
+        <ul>
+          <li><strong>Tribuna of the Uffizi</strong>, 1772–78:
+            <ul>
+              <li>Shows Venus sculptures as <strong>objects of desire</strong> in a male‑dominated art market.</li>
+              <li>Eroticism disguised as “good taste” among elites.</li>
+            </ul>
+          </li>
+          <li><strong>Baroque Venus</strong> – Rubens’s <strong>The Fur (Helena Fourment as Venus)</strong>:
+            <ul>
+              <li>Real, fleshy woman, sensual and worldly.</li>
+              <li>Direct message: <strong>pleasure of life</strong>, not just ideal philosophy.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>Modern Challenges to Classical Beauty</h2>
+        <ul>
+          <li><strong>Olympia</strong>, Manet, 1863:
+            <ul>
+              <li>Prostitute, confrontational stare; hand firmly covers genitals → <strong>ownership of her sexuality</strong>.</li>
+              <li>Flat, pale, unidealized flesh challenges academic Venus standards.</li>
+              <li>Critics: “bad art”, but important for modern notion of the <strong>modern woman</strong>.</li>
+            </ul>
+          </li>
+          <li><strong>The Birth of Venus</strong>, Cabanel, 1863:
+            <ul>
+              <li>Salon success; submissive, welcoming nude, idealized and decorative.</li>
+              <li>Reveals <strong>hypocritical taste</strong> of Parisian high society (sexual appeal masked as myth).</li>
+            </ul>
+          </li>
+          <li><strong>Mary Magdalene in the Grotto</strong>, 1876:
+            <ul>
+              <li>Religious subject but nude is <strong>defenceless and eroticized</strong> – sinner as sexual object.</li>
+            </ul>
+          </li>
+          <li><strong>Dryad (Nude in the Forest)</strong>, Picasso, 1908:
+            <ul>
+              <li>Proto‑Cubism, African influence, primitivism.</li>
+              <li>Primordial woman: crude, distorted, replacing Classical beauty.</li>
+              <li><strong>Challenges Eurocentric beauty standards</strong>.</li>
+            </ul>
+          </li>
+          <li><strong>Branded</strong>, Jenny Saville, 1992:
+            <ul>
+              <li>Monumental self‑portrait; body enlarged, marked, almost monstrous.</li>
+              <li>Attacks unhealthy contemporary ideal of the female body.</li>
+              <li>Uses <strong>ugliness and scale</strong> to critique “idealization of self”.</li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+
+      <!-- THE HUMAN BODY: CHRISTIAN MORALITY -->
+
+      <section id="page-body-morality" class="page">
+        <h1>The Human Body 3: Christian Morality &amp; the Body</h1>
+
+        <h2>Medieval Suspicion of the Body</h2>
+        <ul>
+          <li>Middle Ages: nudity generally <strong>forbidden</strong>, linked to <strong>sin, shame, humiliation</strong>.</li>
+          <li>Body seen as <strong>dangerously sensual</strong>; excessive pleasure leads to destruction.</li>
+        </ul>
+
+        <h2>Nudity as Sin, Shame &amp; Punishment</h2>
+        <ul>
+          <li><strong>Temptation of Eve</strong>, 1120–1132, St. Lazare, Autun:
+            <ul>
+              <li>Nudity associated with <strong>original sin</strong>.</li>
+            </ul>
+          </li>
+          <li><strong>Adam’s Portal</strong>, c. 1235, Bamberg Cathedral:
+            <ul>
+              <li>Nude figures = <strong>martyrdom, torture, humiliation</strong>.</li>
+              <li>Sensuality minimized; forms are <strong>unnatural, unrealistic</strong>.</li>
+            </ul>
+          </li>
+          <li><strong>Last Judgment</strong>, Giotto, 1303–06, Scrovegni Chapel:
+            <ul>
+              <li>Saved: <strong>clothed</strong>, welcomed to Paradise.</li>
+              <li>Damned: <strong>naked</strong>, cast into Hell.</li>
+            </ul>
+          </li>
+          <li>Detail of <strong>Devil and the Damned</strong>:
+            <ul>
+              <li>Nudity has two meanings:
+                <ul>
+                  <li><strong>Bestial</strong> – demonic, animal side (Devil).</li>
+                  <li><strong>Vulnerability</strong> – human weakness and exposure.</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li><strong>Inferno</strong>, c. 1410, San Petronio, Bologna:
+            <ul>
+              <li>Reinforces moral message: body’s pleasures are dangerous and must be controlled.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>From Spiritual to Erotic</h2>
+        <ul>
+          <li><strong>Renaissance</strong>:
+            <ul>
+              <li>Revives Classical nude; shifts from purely spiritual symbolism to <strong>increasing eroticism</strong>.</li>
+              <li>Mythological wrapping (“this is Venus”) is used to <strong>sanitize erotic content</strong>.</li>
+            </ul>
+          </li>
+          <li><strong>Baroque &amp; 17th c. onwards</strong>:
+            <ul>
+              <li>Real, fleshy women disguised as Venuses.</li>
+              <li>Salon system and art market are <strong>male‑dominated</strong> – erotic female nude becomes profitable “high art”.</li>
+            </ul>
+          </li>
+          <li><strong>Impressionism</strong>:
+            <ul>
+              <li>Marks beginning of the <strong>modern woman</strong> – Olympia’s agency and self‑possession.</li>
+            </ul>
+          </li>
+          <li><strong>20th century</strong>:
+            <ul>
+              <li>Feminist critiques re‑evaluate the nude as <strong>site of objectification, control, and resistance</strong>.</li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+
+      <!-- ARTIST & PATRONAGE: STATUS -->
+
+      <section id="page-artist-status" class="page">
+        <h1>The Artist &amp; Patronage 1: Status of the Artist</h1>
+
+        <h2>From Plato’s “Double Falsity” to Low Status</h2>
+        <ul>
+          <li><strong>Plato</strong> devalues art:
+            <ul>
+              <li>Visible world already an <strong>imitation</strong> of true Ideas.</li>
+              <li>Art imitates this imitation → <strong>“imitation of an imitation”</strong>.</li>
+              <li>Art leads us <strong>further away from truth</strong>.</li>
+            </ul>
+          </li>
+          <li>Result: artist holds a <strong>low social status</strong> from antiquity into Middle Ages.</li>
+        </ul>
+
+        <h2>Classical &amp; Medieval Periods: Artist as Labourer</h2>
+        <h3>Classical Period</h3>
+        <ul>
+          <li>Visual arts &amp; handicrafts = <strong>mechanical arts</strong>, not liberal (intellectual) arts.</li>
+          <li>Artists = <strong>labourers</strong>, low status.</li>
+          <li>Main patron = <strong>the state</strong> (public sculpture, temples, etc.).</li>
+        </ul>
+
+        <h3>Medieval Period</h3>
+        <ul>
+          <li>Art seen as <strong>service to God</strong>.</li>
+          <li>Artists treated as <strong>handworkers</strong>; rarely glorified individually.</li>
+          <li>Chief patrons: <strong>Church, papacy, aristocrats</strong>.</li>
+        </ul>
+
+        <h2>Anonymous Craftsmen &amp; Rare Signatures</h2>
+        <ul>
+          <li><strong>François Vase</strong>, c. 560 BC, black‑figure krater:
+            <ul>
+              <li>In ancient Greece, <strong>potter’s craftsmanship</strong> valued more than painter’s.</li>
+              <li>Potter usually signed; painter remained anonymous.</li>
+            </ul>
+          </li>
+          <li><strong>Mourning Scene</strong>, end 5th c. BC, white‑ground lekythos:
+            <ul>
+              <li>Painters seldom sign; this one known only by favourite motif.</li>
+            </ul>
+          </li>
+          <li><strong>Last Judgment</strong>, St. Lazare, Autun, 1120–1132:
+            <ul>
+              <li>Sculptor <strong>Gislebertus</strong> signs “Gislebertus hoc fecit” – rare assertion of authorship.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>Renaissance Humanism: Artist as Intellectual &amp; Celebrity</h2>
+        <ul>
+          <li><strong>Renaissance = turning point</strong>:
+            <ul>
+              <li>Artists seen as <strong>intellectuals, geniuses</strong> (not mere craftsmen).</li>
+              <li>Giorgio Vasari’s <em>Lives of the Artists</em> (1550/1568) → first systematic biographies.</li>
+              <li>Rise of <strong>secular patronage</strong>: rich families commission famous artists to project power.</li>
+            </ul>
+          </li>
+          <li><strong>Perugino</strong>, <em>Delivery of the Keys</em>, 1482:
+            <ul>
+              <li>Italian Renaissance painter called by Pope to fresco Sistine Chapel.</li>
+              <li>Self‑portrait in crowd → <strong>self‑consciousness of artist’s cultural importance</strong>.</li>
+            </ul>
+          </li>
+          <li><strong>Raphael</strong>, <em>La Fornarina</em>, 1518–19:
+            <ul>
+              <li>Signature “Raphael Vrbinas” on armband, in <strong>Latin</strong>.</li>
+              <li>Latin = claim to status as Classical scholar and humanist.</li>
+            </ul>
+          </li>
+          <li><strong>Dürer</strong>, <em>Self‑Portrait in Fur</em>, 1500:
+            <ul>
+              <li>Full frontal pose reserved for Christ → <strong>elevates himself</strong> to quasi‑sacred status.</li>
+              <li>Type recalls <em>Salvator Mundi</em>; cross‑like structure leads eye to his hand and gaze.</li>
+              <li>Example of artist as early <strong>celebrity</strong> in German Renaissance.</li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+
+      <!-- ARTIST & PATRONAGE: RENAISSANCE/BAROQUE PATRONAGE -->
+
+      <section id="page-patronage-renaissance-baroque" class="page">
+        <h1>The Artist &amp; Patronage 2: Church, Court &amp; Merchant Patronage</h1>
+
+        <h2>Church &amp; Papal Patronage</h2>
+        <ul>
+          <li>Renaissance &amp; Baroque: <strong>Catholic Church</strong> remains a major patron:
+            <ul>
+              <li>Commission large fresco cycles, altarpieces, architecture.</li>
+              <li>Counter‑Reformation (17–18th c.) pushes for emotionally persuasive art.</li>
+            </ul>
+          </li>
+          <li><strong>Masaccio, Trinity</strong>, 1426–28:
+            <ul>
+              <li>Painted chapel with perfect linear perspective.</li>
+              <li>Includes <strong>donor couple</strong> (Domenico Lenzi and wife?) kneeling – early donor portrait.</li>
+            </ul>
+          </li>
+          <li><strong>Portinari Altarpiece</strong>, c. 1475:
+            <ul>
+              <li>Nativity scene with donors Tommaso Portinari, his wife Maria Baroncelli, and children.</li>
+              <li>Uses <strong>hierarchy of size</strong> (medieval convention) rather than strict realism.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>Merchant Families &amp; Display of Wealth</h2>
+        <h3>Florence: Strozzi &amp; Medici Rivalry</h3>
+        <ul>
+          <li><strong>Adoration of the Magi</strong>, Gentile da Fabriano, 1423:
+            <ul>
+              <li>Lavish Gothic altarpiece commissioned by wealthy merchant <strong>Palla Strozzi</strong>.</li>
+              <li>Imaginative, exotic costumes &amp; extravagance display his wealth.</li>
+              <li>Strozzi and son appear just behind the third king.</li>
+            </ul>
+          </li>
+          <li><strong>Procession of the Magi</strong>, Benozzo Gozzoli, c. 1459–61, Medici‑Riccardi Palace chapel:
+            <ul>
+              <li>Members of Medici family and painter’s <strong>self‑portrait</strong> inserted into sacred procession.</li>
+              <li>Signatures such as “Opus Benotii” claim authorship.</li>
+            </ul>
+          </li>
+          <li><strong>Botticelli, Adoration of the Magi</strong>, c. 1475:
+            <ul>
+              <li>Not officially Medici‑commissioned, but includes Medici portraits anyway → <strong>favourable association</strong>.</li>
+              <li>Botticelli includes his own self‑portrait.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>Court Artists &amp; Royal Patronage</h2>
+        <ul>
+          <li>17th–18th c.: <strong>court artists</strong> gain international fame; royal academies formalise artistic training.</li>
+          <li>Key institutions:
+            <ul>
+              <li>French Royal Academy of Painting and Sculpture (1648).</li>
+              <li>British Royal Academy of Arts (1768).</li>
+            </ul>
+          </li>
+          <li><strong>Rubens</strong>, <em>Self‑Portrait with Isabella Brant</em>, 1609–10:
+            <ul>
+              <li>Flemish Baroque painter with over 100 assistants.</li>
+              <li>Presents himself as a refined gentleman (sword, orange stockings); celebrates his marriage into high society.</li>
+            </ul>
+          </li>
+          <li><strong>Velázquez</strong>:
+            <ul>
+              <li><em>Self‑portrait</em>, 1639: most sought‑after painter in Europe, also a diplomat.</li>
+              <li><em>Las Meninas</em>, 1656:
+                <ul>
+                  <li>Combines royal portrait with artist’s self‑representation in studio.</li>
+                  <li>Reflection of royal couple in mirror + painter at work emphasise his <strong>closeness to power</strong>.</li>
+                  <li>Granted knighthood in 1658 by Philip IV → artist gains <strong>noble status</strong>.</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+
+      <!-- ARTIST & PATRONAGE: MODERN & MARKET -->
+
+      <section id="page-modern-patronage-market" class="page">
+        <h1>The Artist &amp; Patronage 3: Modern Market &amp; Supercollectors</h1>
+
+        <h2>19th Century: Independence &amp; Art Dealers</h2>
+        <ul>
+          <li>Cheaper, widely available art materials → more people become artists.</li>
+          <li><strong>Art dealers</strong> begin to replace traditional patronage:
+            <ul>
+              <li>Artists become more <strong>independent</strong> but also precarious (Bohemian lifestyle).</li>
+              <li>Must compete in a crowded, market‑driven system.</li>
+            </ul>
+          </li>
+          <li><strong>Van Gogh, The Red Vineyards of Arles</strong>, 1888:
+            <ul>
+              <li>Produced over 2000 works but <strong>sold only one painting</strong> in his lifetime.</li>
+              <li>Highlights the gap between later fame and contemporary poverty.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>Early 20th Century: Dealers, Critics &amp; Modernism</h2>
+        <ul>
+          <li><strong>Picasso, La Vie</strong>, 1903:
+            <ul>
+              <li>Blue Period; expresses misery (hunger, cold, death of friend) while trying to establish himself in Paris.</li>
+            </ul>
+          </li>
+          <li>Art critics and dealers increasingly shape reputations and value.</li>
+        </ul>
+
+        <h2>Collectors, Museums &amp; New Patronage</h2>
+        <ul>
+          <li><strong>Vasari</strong>, <em>Lives of the Artists</em>:
+            <ul>
+              <li>Creates a <strong>canon of great artists</strong> from Cimabue to mid‑16th c.</li>
+              <li>Helps justify collecting and museum display.</li>
+            </ul>
+          </li>
+          <li><strong>Uffizi</strong>, Florence:
+            <ul>
+              <li>Begun 1560 as Medici office and art collection; prototype of art museum.</li>
+            </ul>
+          </li>
+          <li><strong>Guggenheim Museums</strong>:
+            <ul>
+              <li>Solomon R. Guggenheim (collection 1937) → New York museum (1957–59) for modern art.</li>
+              <li>Peggy Guggenheim Collection, Venice (1951) – important for Surrealism and Abstract Expressionism.</li>
+              <li>Guggenheim Bilbao (1997); Guggenheim Abu Dhabi (planned 2026) → <strong>global network</strong>, merging architecture, tourism, and art.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>Abstract Expressionism &amp; the Power of Patron + Critic</h2>
+        <ul>
+          <li><strong>Jackson Pollock, Mural</strong>, 1943:
+            <ul>
+              <li>Commissioned by <strong>Peggy Guggenheim</strong> for her New York home.</li>
+              <li>Catalyst for his move into large, all‑over abstraction.</li>
+            </ul>
+          </li>
+          <li><strong>Clement Greenberg</strong>, critic:
+            <ul>
+              <li>Hails Pollock as “greatest painter of the age”.</li>
+              <li>Defines <strong>Modernism</strong> as art that emphasizes <strong>abstraction and flatness</strong>.</li>
+            </ul>
+          </li>
+          <li>Photo of Pollock in studio, 1950:
+            <ul>
+              <li>Media images turn him into a <strong>celebrity</strong>, despite alcoholism and troubled personal life.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>Late 20th Century: Supercollectors &amp; Shock Art</h2>
+        <ul>
+          <li>Collectors like <strong>Charles Saatchi</strong> become <strong>new patrons</strong>:
+            <ul>
+              <li>Support Young British Artists (YBA) in 1990s.</li>
+              <li>Use marketing, sensationalism, and media to boost value.</li>
+            </ul>
+          </li>
+          <li><strong>Damien Hirst, The Physical Impossibility of Death in the Mind of Someone Living</strong>, 1991:
+            <ul>
+              <li>Shark in formaldehyde tank.</li>
+              <li>Saatchi gives Hirst <strong>absolute freedom</strong>.</li>
+              <li>Work becomes centrepiece of YBA show (1992); Sun newspaper headline: “£50,000 for Fish without Chips”.</li>
+              <li>Contemporary <strong>memento mori</strong>; also example of art as high‑value commodity.</li>
+            </ul>
+          </li>
+          <li><strong>Tracey Emin, My Bed</strong>, 1998:
+            <ul>
+              <li>Autobiographical installation of unmade bed, bottles, cigarettes, underwear.</li>
+              <li>Saatchi outbids Tate and buys it for £150,000.</li>
+              <li>Emin becomes <strong>celebrity artist</strong>; later model for Vivienne Westwood, Turner Prize nominee, Venice Biennale representative.</li>
+            </ul>
+          </li>
+          <li><strong>Tracey Emin, I’ve Got It All</strong>, 2000:
+            <ul>
+              <li>Self‑image with notes of money pouring out of her lap; mocks symbols of success with vulgarity.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>Questions of Value in the Contemporary Market</h2>
+        <ul>
+          <li>Before Renaissance: value = largely <strong>material cost</strong> (gold, pigments, size).</li>
+          <li>Since Renaissance: payment also for <strong>creativity &amp; skill</strong>.</li>
+          <li>Modern avant‑garde fully liberates art from old rules:
+            <ul>
+              <li>Anything can be art (shark, bed, banana with duct tape).</li>
+            </ul>
+          </li>
+          <li>With rise of supercollectors in late 20th/21st c.:
+            <ul>
+              <li>Who and what <strong>determines value</strong> – artist, critic, collector, auction house, media?</li>
+              <li>What strategies (<strong>shock, scale, scarcity, branding</strong>) are used to boost value?</li>
+              <li>Can such value <strong>last</strong>, or is it fashion‑driven?</li>
+              <li>What impact will <strong>AI</strong> have on authorship, creativity and value?</li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+
+      <!-- SOCIAL & HISTORICAL CONTEXTS: ENGLAND & FRANCE -->
+
+      <section id="page-english-french-18-19" class="page">
+        <h1>Social &amp; Historical Contexts: 18–19C English &amp; French Painting</h1>
+
+        <h2>England: Civil War, Empire &amp; Civic Consciousness</h2>
+        <ul>
+          <li><strong>English Civil Wars (1642–51)</strong> → execution of Charles I (1649) → end of absolute monarchy.</li>
+          <li>Parliament of Great Britain (1707) gains control → <strong>partial democracy</strong>.</li>
+          <li>British Empire expands via colonialism; frequent conflicts with France.</li>
+          <li>These contexts foster a <strong>strong civic consciousness</strong> in English painters and <strong>unique moral themes</strong>.</li>
+        </ul>
+
+        <h2>William Hogarth &amp; Modern Moral Subjects</h2>
+        <ul>
+          <li><strong>Execution of Charles I</strong>, c. 1649–50, history context for later political awareness.</li>
+          <li><strong>Election Series: Canvassing for Votes</strong>, 1754–55:
+            <ul>
+              <li>Series of four paintings about <strong>corruption</strong> in early democratic system.</li>
+              <li>Modern moral subject: electoral fraud in notorious Oxfordshire election of 1754.</li>
+              <li>Painter acts as <strong>satirist and social critic</strong>.</li>
+            </ul>
+          </li>
+          <li><strong>Marriage à la Mode I–VI</strong>, 1743–45:
+            <ul>
+              <li>Another modern moral subject – satire on <strong>marriage of convenience</strong>.</li>
+              <li>Arranged marriage between aristocrat’s son and rich merchant’s daughter.</li>
+              <li>Exposes hypocrisy and moral decay of upper classes.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>Empire, Colonial Subjects &amp; Native Allies</h2>
+        <ul>
+          <li><strong>George Clive and his Family with an Indian Maid</strong>, c. 1765:
+            <ul>
+              <li>Family portrait with Indian maid signifying colonial possession of India.</li>
+              <li>Connects to British East India Company rule from 1757.</li>
+            </ul>
+          </li>
+          <li><strong>Colonel Guy Johnson and Karonghyontye (Captain David Hill)</strong>, c. 1775:
+            <ul>
+              <li>British officer with Mohawk chief advisor.</li>
+              <li>Painting suggests that <strong>peace and order</strong> are guaranteed by British rule → imperial ideology.</li>
+            </ul>
+          </li>
+          <li><strong>Death of General Wolfe</strong>, 1770:
+            <ul>
+              <li>Modern history painting (near‑contemporary event – conquest of Quebec, 1759).</li>
+              <li>Heroes in contemporary dress, but with <strong>classical poses</strong> (Wolfe reminiscent of Christ).</li>
+              <li>Tattooed Native American in contemplative pose symbolises <strong>noble savage</strong> idea.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>Victorian Morality &amp; Gender Double Standards</h2>
+        <ul>
+          <li>Queen Victoria (1837–1901):
+            <ul>
+              <li>Upholds Protestant Puritanism.</li>
+              <li>Emphasis on individual religious, social, and moral duties.</li>
+              <li><strong>High, strict moral standard</strong> for all; <strong>sexual repression</strong> but strong gender inequality.</li>
+              <li>Nude art widely <strong>condemned</strong>.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h3>Augustus Egg, Past and Present I–III (1858)</h3>
+        <ul>
+          <li>Triptych on consequences of <strong>female adultery</strong>:
+            <ul>
+              <li>I: Husband discovers wife’s affair.</li>
+              <li>II: Five years later – father dead, mother expelled, two orphan girls left.</li>
+              <li>III: Wife, with illegitimate child, homeless under London arch, full of regret.</li>
+            </ul>
+          </li>
+          <li>Comment from Frances Fowle: in Victorian England, <strong>men could safely keep mistresses</strong>, but female infidelity was “unforgivable crime”.</li>
+        </ul>
+
+        <h3>Pre‑Raphaelites: Moral Allegory &amp; Individual Responsibility</h3>
+        <ul>
+          <li><strong>Awakening Conscience</strong>, 1853:
+            <ul>
+              <li>Inspired by Dickens’s <em>David Copperfield</em>.</li>
+              <li>Young mistress kept by gentleman has sudden spiritual awakening.</li>
+              <li>Mirror = lost innocence; ray of light on her = <strong>possibility of redemption</strong>.</li>
+              <li>Loaded with symbolic objects (music, furnishings, etc.).</li>
+            </ul>
+          </li>
+          <li><strong>Light of the World</strong>, 1853:
+            <ul>
+              <li>Christ knocking on unopened door → <strong>human soul</strong>.</li>
+              <li>Emphasizes Protestant idea that duty to God is an <strong>individual responsibility</strong>.</li>
+            </ul>
+          </li>
+          <li><strong>Laus Veneris (Praise of Venus)</strong>, 1873–78:
+            <ul>
+              <li>Dreamy, remote, pale women → Victorian beauty as <strong>chaste yet object of desire</strong>.</li>
+              <li>Borrow Botticelli’s ivory flesh and linear elegance.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>France: Haussmann’s Paris, Modernity &amp; Alienation</h2>
+        <h3>Haussmannization</h3>
+        <ul>
+          <li>Napoleon III commissions Baron Haussmann to rebuild Paris (from 1850s):
+            <ul>
+              <li>New grands boulevards; connect centre to periphery.</li>
+              <li>City divided into arrondissements (12, later 20) → <strong>modern management system</strong>.</li>
+              <li>Vistas and visual unity: straight roads to monuments; uniform building heights (~20 m).</li>
+              <li>Public health: sewers, gas pipes, gas lamps.</li>
+              <li>Political aim: wide streets <strong>prevent barricades</strong> and ease troop movement.</li>
+            </ul>
+          </li>
+          <li>Photographs show old Paris as overcrowded, unsanitary, polluted.</li>
+        </ul>
+
+        <h3>Impressionist Urban Scenes</h3>
+        <ul>
+          <li><strong>Boulevard des Capucines</strong>, Monet, 1873–74:
+            <ul>
+              <li>Depicts one of the grands boulevards widened in 19th c.</li>
+              <li>Shows <strong>modern city as social space</strong> of leisure and movement.</li>
+            </ul>
+          </li>
+          <li><strong>Paris Opéra House</strong>, 1862–75:
+            <ul>
+              <li>Symbol of Paris as city of luxury.</li>
+              <li>Sumptuous theatre for entertainment of the rich.</li>
+            </ul>
+          </li>
+          <li><strong>Renoir, The Loge</strong>, 1882:
+            <ul>
+              <li>Focus on theatre interior; interest in artificial light and reflection.</li>
+              <li>Reveals glamour and modernity of Parisian high society.</li>
+            </ul>
+          </li>
+          <li><strong>Paris Street; Rainy Day</strong>, Caillebotte, 1877:
+            <ul>
+              <li>Wide Haussmannian crossroads with gas streetlights.</li>
+              <li>Well‑dressed bourgeois couple isolated in modern crowd → <strong>urban alienation</strong>.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h3>Social Costs: Displacement &amp; Misery</h3>
+        <ul>
+          <li>Haussmann’s project demolished ~20,000 buildings; built ~35,000 new ones:
+            <ul>
+              <li>Medieval dwellings replaced by expensive boulevards and apartments.</li>
+              <li>Poor residents <strong>pushed to periphery</strong> → social fragmentation.</li>
+            </ul>
+          </li>
+          <li><strong>Third‑Class Carriage</strong>, Daumier, c. 1862:
+            <ul>
+              <li>Shows lower‑class passengers in cramped train compartment.</li>
+              <li>French Realism; critiques consequences of modernization.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h3>Alienation, Absinthe &amp; Nightlife</h3>
+        <ul>
+          <li><strong>In a Café (L’Absinthe)</strong>, Degas, 1875–76:
+            <ul>
+              <li>Captures psychological state of degraded city dwellers (actress/prostitute, artist/bohemian).</li>
+              <li>Sense of <strong>isolation</strong> despite crowded modern city.</li>
+            </ul>
+          </li>
+          <li><strong>The Absinthe Drinker</strong>, Manet, 1858–59:
+            <ul>
+              <li>Vagabond ragpicker portrayed with monumental dignity.</li>
+              <li>Ironically dressed like dandy; reveals “other side” of Paris – <strong>city of misery</strong>.</li>
+            </ul>
+          </li>
+          <li><strong>Van Gogh portrait drinking absinthe</strong>, 1887:
+            <ul>
+              <li>Absinthe as cheap drink popular among bohemian artists and writers; symbol of escapism and decadence.</li>
+            </ul>
+          </li>
+          <li><strong>Toulouse‑Lautrec</strong>:
+            <ul>
+              <li>Crippled aristocrat rejected by high society; lives among café‑concerts and brothels.</li>
+              <li>Post‑Impressionist; dies at 36 from alcoholism and syphilis.</li>
+              <li>Posters (<em>Moulin Rouge: La Goulue</em>, <em>Divan Japonais</em>) blur line between high art and advertising.</li>
+              <li>Paintings like <strong>At the Moulin Rouge</strong>, <strong>In the Salon of Rue des Moulins</strong>, and <strong>Rue des Moulins – The Medical Inspection</strong> reveal <strong>backstage world</strong> of sex work, boredom, medical control.</li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+
+      <!-- GENDER & ETHNICITY: MALE GAZE -->
+
+      <section id="page-gender-male-gaze" class="page">
+        <h1>Gender &amp; Ethnicity 1: Gender Stereotypes &amp; the Male Gaze</h1>
+
+        <h2>Postmodern Turn: Gender &amp; Race in Art</h2>
+        <ul>
+          <li>From 1960s, <strong>post‑modern culture</strong> raises attention to:
+            <ul>
+              <li>Gender, race, violence, war, poverty, AIDS, environment.</li>
+            </ul>
+          </li>
+          <li>Gender and racial discrimination in Western art are critically examined.</li>
+          <li>Rise of <strong>Feminist art</strong> and discussions about race and ethnicity.</li>
+        </ul>
+
+        <h2>Woman as “Other” in Western Art</h2>
+        <h3>Machismo &amp; the Heroic Male</h3>
+        <ul>
+          <li><strong>Oath of the Horatii</strong>, David, 1784:
+            <ul>
+              <li>Exaggerates value of <strong>masculine heroism and duty</strong>.</li>
+              <li>Women depicted as emotional, passive, secondary.</li>
+              <li>Example of gender stereotyping: woman as the <strong>“other”</strong>, not the universal subject.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h3>Women as Objects of Male Desire</h3>
+        <ul>
+          <li><strong>Brenn and his Share of the Plunder</strong>, 1893 (French academic history painting):
+            <ul>
+              <li>Nominally about Gauls occupying Rome (4th c. BC).</li>
+              <li>Real subject: <strong>eroticism, voyeurism, fetishism</strong>.</li>
+              <li>Women displayed as <strong>prey and spoils</strong> for male spectator.</li>
+            </ul>
+          </li>
+          <li><strong>Naked (or Nude) Maja</strong>, Goya, c. 1795–1800:
+            <ul>
+              <li>Spanish Romanticism.</li>
+              <li>Projects male desire: sinuous, libertine beauty “ready for consumption”.</li>
+              <li>Direct eye contact like Titian’s <em>Venus of Urbino</em>; BBC comment: “Come and get me, boys!”.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>Orientalism &amp; Exoticised Female Bodies</h2>
+        <ul>
+          <li><strong>Turkish Bath</strong>, Ingres, 1862:
+            <ul>
+              <li>French Neoclassicism.</li>
+              <li>Using “Othering” strategy: eroticism made acceptable via exotic harem setting.</li>
+              <li>Intended audience: <strong>white European men</strong>.</li>
+            </ul>
+          </li>
+          <li><strong>La Grande Odalisque</strong>, Ingres, 1814:
+            <ul>
+              <li>European slave in Oriental harem.</li>
+              <li><strong>Orientalism</strong> (Edward Said, 1978): stereotyped, distorted Western view of Arab/Asian cultures.</li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+
+      <!-- GENDER & ETHNICITY: FEMINIST ART -->
+
+      <section id="page-feminist-art" class="page">
+        <h1>Gender &amp; Ethnicity 2: Feminist Art &amp; Reclaiming the Female Image</h1>
+
+        <h2>Feminist Critique of the Gaze</h2>
+        <ul>
+          <li><strong>Barbara Kruger</strong>, <em>Untitled (Your Gaze Hits the Side of My Face)</em>, 1981:
+            <ul>
+              <li>Photograph + bold text; aggressive slogan over magazine photo.</li>
+              <li>Points to woman as <strong>victim of objectification</strong>.</li>
+              <li>Language of <strong>advertising turned into critique</strong>.</li>
+            </ul>
+          </li>
+          <li><strong>Brigitte Cornand</strong>, <em>The Turkish Bath</em>, 1973:
+            <ul>
+              <li>Reverses tradition of male artist contemplating nude women.</li>
+              <li>Raises question: is the <strong>female gaze</strong> replacing the male gaze in popular culture?</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>Guerrilla Girls &amp; Institutional Critique</h2>
+        <ul>
+          <li><strong>Guerrilla Girls, Untitled (Do Women Have to Be Naked to Get into the Met. Museum?)</strong>, 1985–90:
+            <ul>
+              <li>Poster: points out that women are mostly present in museums as <strong>nudes, not as artists</strong>.</li>
+              <li>Highlights twofold discrimination:
+                <ul>
+                  <li>Women’s bodies idealized and objectified.</li>
+                  <li>Women artists seldom recognized.</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li><strong>The Advantages of Being a Woman Artist</strong>, 1988:
+            <ul>
+              <li>List format; sarcastic “advantages” expose structural inequality (e.g. less pressure because low expectations).</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>Body Image, Kitsch &amp; Banality</h2>
+        <ul>
+          <li><strong>Pop &amp; Post‑Pop: Koons</strong>
+            <ul>
+              <li><em>Michael Jackson and Bubbles</em>, 1988; <em>Pink Panther</em>, 1988:
+                <ul>
+                  <li>Highly polished porcelain/ceramic sculptures from <em>Banality</em> series.</li>
+                  <li>Critique of <strong>kitsch</strong> – beauty of mass‑produced commodities, decorative, without deep aesthetic reflection.</li>
+                  <li>Koons urges bourgeois viewers to <strong>drop guilt about banality</strong>.</li>
+                  <li>Critics say he appropriates mass‑culture objects <strong>without critical distance</strong>.</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li><strong>Niki de Saint Phalle, Black Nana</strong>, 1968–69:
+            <ul>
+              <li>Painted polyester; colourful, disproportioned “Nana”.</li>
+              <li>Claims that <strong>obese, colour‑skinned, disproportioned women can be happy and beautiful</strong>.</li>
+              <li>Artist’s trauma and modelling experience lead her to re‑think femininity.</li>
+            </ul>
+          </li>
+          <li><strong>Jenny Saville, Hybrid</strong>, 1997:
+            <ul>
+              <li>Huge oil painting; female body constructed and mythologized for <strong>perfect beauty</strong>.</li>
+              <li>Women willingly subject themselves to diet, exercise, plastic surgery → <strong>social norms hurt the body</strong>.</li>
+            </ul>
+          </li>
+          <li><strong>Jenny Holzer, Truisms</strong>:
+            <ul>
+              <li>Light installation, e.g. “Murder has its sexual side”.</li>
+              <li>Simple statements (“truisms”) raise concern over woman as <strong>sexual victim</strong>.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>Family, Trauma &amp; Maternal Power</h2>
+        <ul>
+          <li><strong>Louise Bourgeois, The Destruction of the Father</strong>, 1974:
+            <ul>
+              <li>Plaster, latex, wood, fabric, red light: womb‑like installation.</li>
+              <li>Children murder and eat dominant father in fantasy → response to patriarchal family.</li>
+            </ul>
+          </li>
+          <li><strong>Femme Maison (Housewife)</strong>, 1994:
+            <ul>
+              <li>Marble figure whose head is a house; woman <strong>trapped by domesticity</strong>.</li>
+              <li>Alludes to prehistoric <strong>Venus of Dolní Věstonice</strong> but re‑coded under modern gender analysis.</li>
+            </ul>
+          </li>
+          <li><strong>Maman</strong>, 1999:
+            <ul>
+              <li>Bronze and steel giant spider outside Tate Modern.</li>
+              <li>Homage to her mother; expresses <strong>power, protection, strength</strong> using traditionally “masculine” medium of monumental sculpture.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>Rewriting History &amp; Women’s Contributions</h2>
+        <ul>
+          <li><strong>Cindy Sherman, Untitled Film Still #3</strong>, 1977:
+            <ul>
+              <li>Artist plays a fictitious Hollywood‑style housewife: sexually attractive, tidy home, waiting for husband.</li>
+              <li>Mocks stereotyped <strong>1950s femininity</strong>; references culture like <em>Revolutionary Road</em>.</li>
+            </ul>
+          </li>
+          <li><strong>Judy Chicago, The Dinner Party</strong>, 1979:
+            <ul>
+              <li>Triangular table (symbol of femininity &amp; equality) with 39 place settings for important women in history.</li>
+              <li>Each plate shaped like <strong>female genitalia</strong>.</li>
+              <li>Uses ceramics and textiles to <strong>challenge hierarchy of “high” vs “low” art</strong>.</li>
+            </ul>
+          </li>
+          <li><strong>Virginia Woolf Place Setting</strong>:
+            <ul>
+              <li>Represents each woman with unique motif; emphasises female creativity and overlooked contributions.</li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+
+      <!-- GENDER & ETHNICITY: ETHNICITY, ORIENTALISM, PRIMITIVISM -->
+
+      <section id="page-ethnicity-orientalism" class="page">
+        <h1>Gender &amp; Ethnicity 3: Ethnicity, Orientalism &amp; Primitivism</h1>
+
+        <h2>Historical Background: Segregation &amp; Orientalism</h2>
+        <ul>
+          <li>US Jim Crow laws (late 19th c.) enforce racial segregation in facilities (schools, housing, transport, etc.).</li>
+          <li>Segregation declared illegal in 1950s–60s but practice continues.</li>
+          <li>Dominique de Menil funds <em>The Image of the Black in Western Art</em> in 1960s.</li>
+          <li><strong>Edward Said, Orientalism</strong> (1978):
+            <ul>
+              <li>Concept of the “East” as cultural and political construct produced by Western power.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>Blacks in European Christian Art</h2>
+        <ul>
+          <li><strong>Adoration of the Magi</strong>, c. 1485–1500, Prado:
+            <ul>
+              <li>From 14th c., black figure appears as <strong>third, youngest king</strong>.</li>
+              <li>Represents “all mankind” paying homage to Christ – but within <strong>Eurocentric hierarchy</strong>.</li>
+              <li>Exoticised by earrings, unusual clothes.</li>
+            </ul>
+          </li>
+          <li><strong>Baptism of the Eunuch</strong>, 1626:
+            <ul>
+              <li>Popular from 15th–17th c.; St Philip baptizes Ethiopian eunuch.</li>
+              <li>Symbolizes <strong>inclusion of blacks</strong> into Christian, “civilized” world.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>Noble Savage &amp; Hierarchy of Races</h2>
+        <ul>
+          <li><strong>Portrait of Mai (Omai)</strong>, c. 1776:
+            <ul>
+              <li>Polynesian visitor to England; represented as “<strong>noble savage</strong>”.</li>
+              <li>Background evokes Arcadian nature.</li>
+              <li>White men = God’s perfect creation; colonized peoples = <strong>idealized but inferior primitives</strong>.</li>
+            </ul>
+          </li>
+          <li><strong>Goya, Uprising of the Second of May, 1808</strong> (painted 1814):
+            <ul>
+              <li>Shows Spanish rebels fighting French troops and <strong>Moorish cavalry</strong> (Mamelukes).</li>
+              <li>Moors stereotyped as <strong>fierce and merciless</strong>.</li>
+            </ul>
+          </li>
+          <li><strong>Marchesa Elena Grimaldi Cattaneo</strong>, van Dyck, 1623:
+            <ul>
+              <li>Black servant appears as family property, low status.</li>
+              <li>Reflects history of slave trade in Italy and Europe.</li>
+            </ul>
+          </li>
+          <li><strong>Olympia</strong>, Manet, 1863:
+            <ul>
+              <li>White prostitute with black maid bringing flowers.</li>
+              <li>Black woman remains <strong>servant, submissive, background</strong>; white woman commanding, proud.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>Primitivism in Modern Art</h2>
+        <ul>
+          <li><strong>Gauguin, Ia Orana Maria (Ave Maria)</strong>, 1891:
+            <ul>
+              <li>Paints Tahitian women as Virgin &amp; Child with angel/Magi figure.</li>
+              <li>French colony; Tahiti seen as new Arcadia (innocent, uncorrupted nature).</li>
+              <li>Imposes Christian iconography on local people → <strong>cultural appropriation</strong>.</li>
+            </ul>
+          </li>
+          <li><strong>Matisse, Blue Nude</strong>, 1907:
+            <ul>
+              <li>Primitivism: draws on “exotic” forms; figure appears clumsy, distorted.</li>
+              <li>Reveals racist prejudice that non‑Western cultures are <strong>primitive</strong> and bodies “ugly”.</li>
+            </ul>
+          </li>
+          <li><strong>Picasso, Dryad (Nude in the Forest)</strong>, 1908:
+            <ul>
+              <li>African‑influenced Proto‑Cubism; modelled on so‑called “savage” sculpture.</li>
+              <li>Primordial woman: crude, distorted; challenges classical beauty and Eurocentrism.</li>
+            </ul>
+          </li>
+          <li>Common stereotypes:
+            <ul>
+              <li>Non‑white figures placed in secondary/background roles.</li>
+              <li>Depicted as humble, submissive, or excessively fierce and ugly.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>Sexual Violence &amp; the Racialised Body</h2>
+        <ul>
+          <li><strong>Three Young White Men and a Black Woman (Rape of a Negress)</strong>, 1632:
+            <ul>
+              <li>Dutch Baroque art; depicts an actual <strong>sexual assault</strong> (not just mythic “abduction”).</li>
+              <li>Black woman not idealized; her blackness and “ugliness” exaggerated.</li>
+              <li>Violence and vulgarity “justified” by supposed inferiority of victim.</li>
+            </ul>
+          </li>
+          <li><strong>Rape of the Daughters of Leucippus</strong>, Rubens, c. 1618:
+            <ul>
+              <li>Mythological abduction (Castor &amp; Pollux kidnap Phoebe and Hilaeira).</li>
+              <li>In Western canon, “rape” often aestheticized and eroticized when victims are white and idealized.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>Contemporary Responses by Non‑White Artists</h2>
+        <ul>
+          <li><strong>Chris Ofili</strong> (YBA, British‑Nigerian artist):
+            <ul>
+              <li>Challenges <strong>Blaxploitation</strong> imagery – racial stereotyping in popular culture.</li>
+              <li>Asks how non‑white artists can gain recognition without being limited to ethnic themes.</li>
+            </ul>
+          </li>
+          <li><strong>The Holy Virgin Mary</strong>, 1996:
+            <ul>
+              <li>Mixed media with acrylic, oil, collage, glitter, map pins, <strong>elephant dung</strong>.</li>
+              <li>Parodies Western assumptions about African identity and Catholic iconography.</li>
+              <li>Commercial cut‑outs of buttocks/genitalia used as “angels” – <strong>mocking religious imagery</strong>.</li>
+              <li>Use of dung called “blasphemous” → controversy reveals ongoing racism and religious sensitivity.</li>
+            </ul>
+          </li>
+          <li><strong>Raphael, Alba Madonna</strong>, c. 1510 (context):
+            <ul>
+              <li>Traditional Madonna fulfils white male desires:
+                <ul>
+                  <li>Virgin.</li>
+                  <li>Mother.</li>
+                  <li>Ideal white beauty.</li>
+                </ul>
+              </li>
+              <li>Under gender and racial discourse, this ideal is <strong>re‑examined</strong> as culturally specific, not universal.</li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 21C: ART MARKET, MEDIA, VALUE -->
+
+      <section id="page-art-market-21c" class="page">
+        <h1>Rethinking Art 1: Global Art Market, Media &amp; Value</h1>
+
+        <h2>Record Prices &amp; New Patrons</h2>
+        <ul>
+          <li><strong>Salvator Mundi</strong>, c. 1500, Leonardo (attributed), oil on panel, 65.6 × 45.4 cm:
+            <ul>
+              <li>Sold at Christie’s New York in 2017 for ~US$450 million.</li>
+              <li>Buyer: Saudi Crown Prince Mohammed bin Salman.</li>
+              <li>Symbol of <strong>rise of art market in Asia and the Middle East</strong>.</li>
+              <li>Martin Kemp defended authenticity in 2019 (lecture “Leonardo’s Salvator Mundi: Scholarship, Science and Skulduggery”).</li>
+            </ul>
+          </li>
+          <li><strong>Beeple, Everydays: The First 5000 Days</strong>, 2007–2021:
+            <ul>
+              <li>Digital collage of 5000 daily pictures (painting + digital art).</li>
+              <li>Sold for nearly US$70 million at Christie’s online auction (March 2021).</li>
+              <li>Marks entry of <strong>purely digital art</strong> into blue‑chip auction houses.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>Key Issues in 21st‑Century Art</h2>
+        <ul>
+          <li><strong>Mass culture &amp; art market</strong> – artworks circulate globally via social media and auctions.</li>
+          <li>Changing relationships among <strong>artist, collector, public, society</strong>.</li>
+          <li>New media and digital technologies redefine:
+            <ul>
+              <li>What counts as <strong>original</strong>.</li>
+              <li>How we experience art (screen vs physical).</li>
+            </ul>
+          </li>
+          <li>Art display extends <strong>beyond museums</strong>; art “comes alive” in public space, immersive installations, online platforms.</li>
+          <li>Questions:
+            <ul>
+              <li>How to evaluate artworks – are they <strong>commodities only</strong>?</li>
+              <li>What is <strong>authenticity and ownership</strong> in digital art (NFTs, reproducibility)?</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>Pop Art &amp; Conceptual Shifts</h2>
+        <ul>
+          <li><strong>Warhol, Brillo Box</strong>, 1964:
+            <ul>
+              <li>Silkscreen ink and house paint on plywood, life‑size replicas of supermarket boxes.</li>
+              <li>Mocks everyday commercial products and consumer culture.</li>
+              <li>Art critic Arthur Danto (1965): asks “Why is this object a work of art?”</li>
+              <li>Work prompts philosophical question: <strong>What is the nature of art?</strong></li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>Banksy, Media &amp; Market</h2>
+        <ul>
+          <li><strong>Girl with Balloon</strong>, 2002, London graffiti:
+            <ul>
+              <li>British street artist, identity hidden (via “Pest Control”).</li>
+              <li>Works on <strong>social and political themes</strong>, humanitarian concerns (refugees, war victims).</li>
+            </ul>
+          </li>
+          <li><strong>Love is in the Bin</strong>, 2018:
+            <ul>
+              <li>Print of <em>Girl with Balloon</em> partially shredded at Sotheby’s immediately after being auctioned.</li>
+              <li>Marketed as “first artwork created live during an auction”.</li>
+              <li>Price rose from £1.04 million (2018) to £18.5 million (2021).</li>
+              <li>Shows how <strong>media spectacle itself creates value</strong>.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>Maurizio Cattelan &amp; Hype</h2>
+        <ul>
+          <li><strong>Comedian</strong>, 2019, Art Basel Miami:
+            <ul>
+              <li>Duct‑taped banana on wall.</li>
+              <li>Echoes economics book <em>The $12 Million Stuffed Shark</em> (Don Thompson) about contemporary art value.</li>
+              <li>Raises question: art object or just taxidermy/fruit? Where is the value (idea, certificate, media attention)?</li>
+            </ul>
+          </li>
+          <li>Julian Stallabrass (<em>Contemporary Art</em>, 2020): “What is popular is valuable, and what is valuable is popular.”</li>
+          <li>Is collecting art today <strong>pure investment</strong>? Is media attention the main <strong>key to success</strong>?</li>
+        </ul>
+
+        <h2>Sotheby’s “Value of Art” Criteria</h2>
+        <p>Commercial institutions list the following factors:</p>
+        <ul>
+          <li>1. <strong>Authenticity</strong></li>
+          <li>2. <strong>Condition</strong></li>
+          <li>3. <strong>Rarity</strong></li>
+          <li>4. <strong>Provenance</strong> (ownership history)</li>
+          <li>5. <strong>Historical significance</strong></li>
+          <li>6. <strong>Size</strong></li>
+          <li>7. <strong>Fashion</strong> (current taste)</li>
+          <li>8. <strong>Subject matter</strong></li>
+          <li>9. <strong>Medium</strong></li>
+          <li>10. <strong>Quality</strong></li>
+        </ul>
+
+        <h2>Open Questions</h2>
+        <ul>
+          <li>What really determines the <strong>true value</strong> of art today?</li>
+          <li>Can market value reflect <strong>aesthetic or social value</strong>?</li>
+          <li>How will <strong>digital technologies and AI</strong> reshape:
+            <ul>
+              <li>Authorship, creativity and originality.</li>
+              <li>Distribution and access.</li>
+              <li>Long‑term value and preservation.</li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 21C: DIGITAL, IMMERSIVE, MUSEUM -->
+
+      <section id="page-digital-immersive" class="page">
+        <h1>Rethinking Art 2: Digital Media, Immersive Art &amp; New Museums</h1>
+
+        <h2>Art as Social &amp; Political Action</h2>
+        <ul>
+          <li><strong>Keith Haring</strong>, <em>Ignorance = Fear, Silence = Death</em>, 1989:
+            <ul>
+              <li>Poster for ACT UP; raises awareness of AIDS crisis.</li>
+              <li>Shows how street/pop art can be a tool of <strong>activism</strong>.</li>
+            </ul>
+          </li>
+          <li><strong>Banksy</strong>, <em>Napalm</em>, 2004:
+            <ul>
+              <li>Appropriation of Nick Ut’s “Napalm Girl” (Vietnam War) with Mickey Mouse &amp; McDonald’s figure.</li>
+              <li>Critiques <strong>cultural and commercial invasion</strong> by American brands.</li>
+            </ul>
+          </li>
+          <li><strong>Graffiti Removal</strong>, 2008, Leake Street; mural at Royal Courts of Justice, 2025:
+            <ul>
+              <li>Street art removed/covered; criticised as <strong>suppression of free speech</strong>.</li>
+              <li>Shows tension between political activism and institutional control.</li>
+            </ul>
+          </li>
+          <li><strong>Invader</strong>, <em>Invasion of Hong Kong IV (Pac‑Man Game)</em>, 2014:
+            <ul>
+              <li>French artist places “Space Invaders” mosaics worldwide.</li>
+              <li>Street art as <strong>liberation of art from institutional boundaries</strong>, close to everyday life.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>Performance, Fluxus &amp; Time‑based Media</h2>
+        <ul>
+          <li><strong>Nam June Paik</strong>, <em>TV Bra for Living Sculpture</em>, 1969:
+            <ul>
+              <li>Performance with Charlotte Moorman: nude body, cello and TV sets.</li>
+              <li>“Captures art in the 4th dimension – <strong>TIME</strong>”.</li>
+              <li>Part of <strong>Fluxus</strong> – experimental, cross‑media movement of 1960s–70s.</li>
+            </ul>
+          </li>
+          <li><em>Global Groove</em>, 1973:
+            <ul>
+              <li>Colour videotape; scripts manipulated by video synthesizer.</li>
+              <li>Early exploration of <strong>video art</strong> and media overload.</li>
+            </ul>
+          </li>
+          <li><strong>Computer Imaging</strong>:
+            <ul>
+              <li>Work like <em>Nora</em>, 1979: computer‑generated colour photography.</li>
+              <li>Since 1970s, computer becomes an <strong>artistic medium</strong>; raises question whether machines will replace human artists.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>Projection Mapping &amp; Multimedia Installations</h2>
+        <ul>
+          <li><strong>Tony Oursler</strong>:
+            <ul>
+              <li><em>Mansheshe</em>, 1997; <em>Caricature</em>, 2002:
+                <ul>
+                  <li>Ceramic, glass, video players, projectors, sound.</li>
+                  <li>Digitally processed videos projected onto sculptural forms to make them feel “alive”.</li>
+                  <li>Early example of <strong>projection mapping</strong>.</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li>Key terms:
+            <ul>
+              <li><strong>Multimedia presentation</strong> – enlarged projection and interactive experiences using text, audio, video, animation.</li>
+              <li><strong>Projection mapping</strong> – projection on irregular 3D surfaces to create illusion of moving objects.</li>
+              <li><strong>Augmented Reality (AR)</strong> &amp; <strong>Virtual Reality (VR)</strong>.</li>
+              <li><strong>LED installations</strong>.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>Museum as “Experience Architecture”</h2>
+        <ul>
+          <li>Museum no longer just a display space; becomes <strong>designed experience</strong>.</li>
+          <li>Whole visit choreographed to enhance <strong>interaction between visitor and environment</strong>.</li>
+          <li>Goal: <strong>immersive experience</strong> – engagement of all senses, temporary illusion of transcendence.</li>
+        </ul>
+
+        <h2>Light &amp; Space: James Turrell</h2>
+        <ul>
+          <li><strong>Afrum, Pale Blue</strong>, 1968:
+            <ul>
+              <li>Projected light forms illusion of hovering cube.</li>
+              <li>Light itself becomes “material”.</li>
+            </ul>
+          </li>
+          <li>Works explore:
+            <ul>
+              <li><strong>Perception and materiality of light</strong>.</li>
+              <li>Sensory experience of space, colour, and seeing.</li>
+            </ul>
+          </li>
+          <li><strong>Ganzfelds (Dhatu, Open Field)</strong>:
+            <ul>
+              <li>Visitor experiences <strong>loss of depth perception</strong>; “sees herself seeing”.</li>
+              <li>Presents <strong>transcendental experience</strong> via pure light and minimal environment.</li>
+              <li>Often site‑specific (e.g. Chichu Art Museum by Tadao Ando).</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>Yayoi Kusama &amp; Infinity Rooms</h2>
+        <ul>
+          <li><strong>Aftermath of Obliteration of Eternity</strong>, 2009:
+            <ul>
+              <li>Mirrors + LED lights; creates endless reflections.</li>
+            </ul>
+          </li>
+          <li><strong>Infinity Mirror Room – Phalli’s Field</strong>, 1965:
+            <ul>
+              <li>Room filled with soft phallic forms and mirrors.</li>
+              <li>Combines repetition, sexuality, and infinite visual field.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>teamLab &amp; Post‑Digital Immersion</h2>
+        <ul>
+          <li><strong>teamLab</strong> founded 2001:
+            <ul>
+              <li>Interdisciplinary group: artists, programmers, engineers, CG animators, architects, designers, etc.</li>
+              <li>Merges visual art, technology, design, and nature at <strong>unprecedented scale</strong>.</li>
+              <li>Works are <strong>interactive and reactive</strong> – change with viewer movement.</li>
+            </ul>
+          </li>
+          <li><strong>teamLab Borderless</strong> (2018) &amp; <strong>teamLab Planets</strong> (2018, Tokyo):
+            <ul>
+              <li>Immersive worlds like:
+                <ul>
+                  <li><em>(Infinite) Crystal Universe</em>.</li>
+                  <li><em>Multi Jumping Universe</em>.</li>
+                  <li><em>Universe of Water Particles on a Rock Hill where People Gather</em>.</li>
+                </ul>
+              </li>
+              <li>Blurs line between museum and <strong>theme park</strong>.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>Art, Entertainment &amp; Popular Culture</h2>
+        <ul>
+          <li>Immersive art influences and is influenced by film and theme parks:
+            <ul>
+              <li><em>Avatar</em>’s Tree of Souls; <em>Pandora – The World of Avatar</em> at Disneyland (2017).</li>
+              <li><em>Life of Pi</em> (2012) with digital oceans and animals.</li>
+            </ul>
+          </li>
+          <li>Blurring boundary between <strong>high art and mass culture</strong>.</li>
+          <li>Globalization: expanded art market draws worldwide attention, but does it reflect <strong>true artistic value</strong>?</li>
+          <li>Digital tech and AI constantly challenge:
+            <ul>
+              <li>Definition of <strong>artwork</strong> and <strong>artist</strong>.</li>
+              <li>Role of <strong>virtual vs real experience</strong> – can online/VR replace physical contact with art?</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>21st‑Century Artist, Audience &amp; Technology</h2>
+        <ul>
+          <li>Past: artists seen as <strong>craftsmen</strong> or <strong>intellectuals</strong>; audience expected to seek meaning and value.</li>
+          <li>21st century:
+            <ul>
+              <li>Artist can be <strong>technocrat, anybody, even AI</strong>.</li>
+              <li>Audience often seeking <strong>immediate, sensual, emotional experience</strong>.</li>
+            </ul>
+          </li>
+          <li>Rise of <strong>immersive art</strong>:
+            <ul>
+              <li>Works grow in <strong>size and complexity</strong>.</li>
+              <li>Interact with audience in new ways; experiences are <strong>transient</strong>.</li>
+              <li>Question: are museums becoming <strong>fun parks</strong>?</li>
+            </ul>
+          </li>
+          <li>Technologies become both <strong>tool and content</strong>:
+            <ul>
+              <li>But can technology <strong>replace content</strong> (idea, meaning)?</li>
+              <li>What impact will <strong>digital tech and AI</strong> bring to the future of art?</li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+
+    </main>
+  </div>
+
+  <script>
+    function toggleSidebar() {
+      const sb = document.getElementById("sidebar");
+      sb.classList.toggle("open");
+    }
+
+    function setActivePage(pageId) {
+      document.querySelectorAll(".page").forEach((p) => {
+        p.classList.toggle("active", p.id === "page-" + pageId);
+      });
+      document.querySelectorAll(".nav-link").forEach((link) => {
+        link.classList.toggle("active", link.dataset.page === pageId);
+      });
+      if (window.innerWidth <= 768) {
+        document.getElementById("sidebar").classList.remove("open");
+      }
+    }
+
+    function navClick(e) {
+      e.preventDefault();
+      const pageId = e.currentTarget.getAttribute("data-page");
+      if (pageId) setActivePage(pageId);
+    }
+
+    document.querySelectorAll(".nav-link").forEach((link) => {
+      link.addEventListener("click", navClick);
+    });
+
+    window.addEventListener("hashchange", () => {
+      const hash = window.location.hash.replace("#page-", "");
+      if (hash) setActivePage(hash);
+    });
+
+    window.addEventListener("load", () => {
+      const hash = window.location.hash.replace("#page-", "");
+      if (hash) setActivePage(hash || "home");
+    });
+  </script>
+
+
+</body></html>

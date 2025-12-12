@@ -1,0 +1,1915 @@
+<!DOCTYPE html><html lang="en"><head><meta name="x-poe-datastore-behavior" content="local_only"><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
+  <meta charset="UTF-8">
+  <title>Western Art Mini‑Wiki – Combined (With Content)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root {
+      --bg: #f8f8fa;
+      --sidebar-bg: #232946;
+      --sidebar-text: #fefefe;
+      --sidebar-accent: #eebbc3;
+      --sidebar-hover: #1b2035;
+      --content-bg: #ffffff;
+      --text-main: #222222;
+      --border-subtle: #dddddd;
+      --link: #1f6feb;
+      --link-hover: #174a9c;
+      --muted: #666666;
+      --heading: #111827;
+      --badge-bg: #eef2ff;
+      --badge-text: #3730a3;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+    }
+
+    a {
+      color: var(--link);
+      text-decoration: none;
+    }
+    a:hover {
+      color: var(--link-hover);
+      text-decoration: underline;
+    }
+
+    .app-shell {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Sidebar */
+
+    .sidebar {
+      width: 270px;
+      flex-shrink: 0;
+      background: var(--sidebar-bg);
+      color: var(--sidebar-text);
+      display: flex;
+      flex-direction: column;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .sidebar-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .sidebar-title {
+      font-weight: 700;
+      font-size: 1rem;
+      line-height: 1.3;
+    }
+
+    .sidebar-subtitle {
+      font-size: 0.78rem;
+      opacity: 0.75;
+    }
+
+    .sidebar-menu-toggle {
+      display: none;
+      background: none;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 6px;
+      color: var(--sidebar-text);
+      padding: 0.2rem 0.4rem;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    .sidebar-section-title {
+      text-transform: uppercase;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      opacity: 0.8;
+      padding: 0.75rem 1.1rem 0.25rem;
+    }
+
+    .nav-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 0.5rem;
+    }
+
+    .nav-item {
+      margin: 0;
+    }
+
+    .nav-link {
+      display: block;
+      padding: 0.35rem 1.1rem;
+      font-size: 0.86rem;
+      color: var(--sidebar-text);
+      opacity: 0.9;
+      border-left: 3px solid transparent;
+      text-decoration: none;
+    }
+
+    .nav-link:hover {
+      background: var(--sidebar-hover);
+      opacity: 1;
+      text-decoration: none;
+    }
+
+    .nav-link.active {
+      border-left-color: var(--sidebar-accent);
+      background: rgba(255, 255, 255, 0.05);
+      opacity: 1;
+      font-weight: 600;
+    }
+
+    .nav-link small {
+      font-size: 0.7rem;
+      opacity: 0.8;
+    }
+
+    /* Mobile */
+
+    @media (max-width: 768px) {
+      .sidebar {
+        position: fixed;
+        z-index: 20;
+        left: 0;
+        top: 0;
+        transform: translateX(-100%);
+        transition: transform 0.2s ease-out;
+        height: 100%;
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .sidebar-header {
+        padding-right: 0.6rem;
+      }
+
+      .sidebar-menu-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .content {
+        margin-left: 0;
+      }
+
+      .content-header-mobile {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: var(--content-bg);
+        border-bottom: 1px solid var(--border-subtle);
+        padding: 0.4rem 0.8rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .content-header-mobile button {
+        border-radius: 6px;
+        border: 1px solid #d1d5db;
+        background: #f9fafb;
+        padding: 0.2rem 0.5rem;
+        font-size: 0.85rem;
+      }
+    }
+
+    /* Content */
+
+    .content {
+      flex: 1;
+      padding: 1.25rem 1.5rem 2rem;
+      max-width: 1040px;
+      margin: 0 auto;
+    }
+
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+      color: var(--heading);
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 0.4rem;
+    }
+
+    h2 {
+      font-size: 1.3rem;
+      margin-top: 1.8rem;
+      margin-bottom: 0.3rem;
+    }
+
+    h3 {
+      font-size: 1.08rem;
+      margin-top: 1.1rem;
+      margin-bottom: 0.2rem;
+    }
+
+    p {
+      line-height: 1.6;
+      margin: 0.4rem 0 0.6rem;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.15rem 0.45rem;
+      border-radius: 999px;
+      background: var(--badge-bg);
+      color: var(--badge-text);
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-left: 0.3rem;
+    }
+
+    .card {
+      background: var(--content-bg);
+      border-radius: 10px;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+      border: 1px solid var(--border-subtle);
+      padding: 0.9rem 1rem;
+      margin: 0.5rem 0 1rem;
+    }
+
+    ul {
+      margin-top: 0.2rem;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 0.4rem 0 0.8rem;
+      font-size: 0.9rem;
+    }
+    th, td {
+      border: 1px solid var(--border-subtle);
+      padding: 0.35rem 0.5rem;
+      vertical-align: top;
+    }
+    th {
+      background: #f3f4ff;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div>
+          <div class="sidebar-title">Western Art Mini‑Wiki</div>
+          <div class="sidebar-subtitle">Lecture‑note topics &amp; key terms</div>
+        </div>
+        <button class="sidebar-menu-toggle" onclick="toggleSidebar()">☰</button>
+      </div>
+
+      <!-- Combined navigation, ordered by lecture sequence -->
+
+      <!-- Overview -->
+      <div class="sidebar-section-title">Overview</div>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a href="#page-home" class="nav-link active" data-page="home">Home · Overview</a>
+        </li>
+        <li class="nav-item">
+          <a href="#page-method" class="nav-link" data-page="method">Western Art Appreciation</a>
+        </li>
+      </ul>
+
+      <!-- Classical Foundations -->
+      <div class="sidebar-section-title">Classical Foundations</div>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a href="#page-classical-periods" class="nav-link" data-page="classical-periods">
+            Classical Art 1: Greek Periods &amp; Canon
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#page-archaic-kouroi" class="nav-link" data-page="archaic-kouroi">
+            Archaic Kouroi &amp; Early Sculpture
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#page-classical-canon" class="nav-link" data-page="classical-canon">
+            Classical Canon &amp; Contrapposto
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#page-hellenistic-art" class="nav-link" data-page="hellenistic-art">
+            Hellenistic Art &amp; Pathos
+          </a>
+        </li>
+      </ul>
+
+      <!-- Roman Art & Portraiture (Classical Art 2) -->
+      <div class="sidebar-section-title">Roman Art &amp; Empire</div>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a href="#page-roman-portraiture" class="nav-link" data-page="roman-portraiture">
+            Roman Art &amp; Portraiture
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#page-roman-architecture-relief" class="nav-link" data-page="roman-architecture-relief">
+            Reliefs, Altars, Arches &amp; Columns
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#page-roman-wall-painting" class="nav-link" data-page="roman-wall-painting">
+            Roman Wall Painting: Four Styles
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#page-roman-painting-themes" class="nav-link" data-page="roman-painting-themes">
+            Roman Painting Themes &amp; Legacy
+          </a>
+        </li>
+      </ul>
+
+      <!-- Late Antique & Medieval -->
+      <div class="sidebar-section-title">Late Antique &amp; Medieval</div>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a href="#page-late-antique" class="nav-link" data-page="late-antique">
+            Late Antique &amp; Early Christian Art
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#page-byzantine" class="nav-link" data-page="byzantine">
+            Byzantine Art
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#page-islamic-med" class="nav-link" data-page="islamic-med">
+            Islamic Art of the Mediterranean
+          </a>
+        </li>
+      </ul>
+
+      <!-- Renaissance Foundations -->
+      <div class="sidebar-section-title">Renaissance Foundations</div>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a href="#page-renaissance-overview" class="nav-link" data-page="renaissance-overview">
+            Renaissance in Italy · Overview
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#page-early-renaissance" class="nav-link" data-page="early-renaissance">
+            Early Renaissance: Masaccio &amp; Donatello
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#page-high-renaissance" class="nav-link" data-page="high-renaissance">
+            High Renaissance: Leonardo, Michelangelo, Raphael
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#page-venetian-renaissance" class="nav-link" data-page="venetian-renaissance">
+            Venetian Renaissance &amp; Colourism
+          </a>
+        </li>
+      </ul>
+
+      <!-- Baroque & Early Modern -->
+      <div class="sidebar-section-title">Baroque &amp; Early Modern</div>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a href="#page-baroque-italy" class="nav-link" data-page="baroque-italy">
+            Baroque Art in Italy · Caravaggio &amp; Bernini
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#page-baroque-ceilings" class="nav-link" data-page="baroque-ceilings">
+            Illusionistic Ceilings &amp; Jesuit Art
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#page-neoclassicism" class="nav-link" data-page="neoclassicism">
+            Neoclassicism &amp; Enlightenment
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#page-romanticism" class="nav-link" data-page="romanticism">
+            Romanticism &amp; the Sublime
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#page-impressionism" class="nav-link" data-page="impressionism">
+            Impressionism &amp; Neo‑Impressionism
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#page-post-impressionism" class="nav-link" data-page="post-impressionism">
+            Post‑Impressionism
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#page-modern-art" class="nav-link" data-page="modern-art">
+            Modern Art: Cubism to Pop Art
+          </a>
+        </li>
+      </ul>
+
+      <!-- Key Terms & Techniques -->
+      <div class="sidebar-section-title">Key Terms &amp; Techniques</div>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a href="#page-key-terms" class="nav-link" data-page="key-terms">
+            Glossary · Key Terms
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#page-techniques" class="nav-link" data-page="techniques">
+            Materials &amp; Techniques
+          </a>
+        </li>
+      </ul>
+
+      <!-- Comparison & Exam Help -->
+      <div class="sidebar-section-title">Comparison &amp; Exam Help</div>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a href="#page-comparisons" class="nav-link" data-page="comparisons">
+            Comparison Tables (Style vs Style)
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#page-exam-strategy" class="nav-link" data-page="exam-strategy">
+            Exam Strategy &amp; Sample Prompts
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Content -->
+    <main class="content">
+      <div class="content-header-mobile">
+        <div style="font-size:0.9rem;font-weight:600;">Western Art Mini‑Wiki</div>
+        <button onclick="toggleSidebar()">☰ Menu</button>
+      </div>
+
+      <!-- Home -->
+      <section id="page-home" class="page active">
+        <h1>Western Art Mini‑Wiki</h1>
+        <p class="muted">
+          Single‑file mini‑reference for your Western Art Appreciation finals. All topics from
+          <strong>Classical Art</strong> through <strong>Modern Art</strong> are organized in lecture order and written in exam‑oriented language.
+        </p>
+        <div class="card">
+          <h3>How to Use This File <span class="badge">Exam‑oriented</span></h3>
+          <ul>
+            <li>Use the sidebar to jump to periods &amp; themes in the same order as your lecture notes.</li>
+            <li>Each page highlights:
+              <ul>
+                <li><strong>Key ideas &amp; terminology</strong> (good for MC / T‑F / fill‑in‑the‑blank / short‑answer).</li>
+                <li><strong>Core artworks &amp; examples</strong> with cause‑and‑effect links (good for essays).</li>
+              </ul>
+            </li>
+            <li>Check <a href="#page-comparisons" data-page="comparisons" onclick="navClick(event)">Comparison Tables</a> for quick style differences.</li>
+            <li>See <a href="#page-exam-strategy" data-page="exam-strategy" onclick="navClick(event)">Exam Strategy</a> for Section A &amp; Section B tips.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Western Art Appreciation (methods) -->
+      <section id="page-method" class="page">
+        <h1>Western Art Appreciation</h1>
+        <p>
+          Western Art Appreciation is not just about memorizing artworks. For your exam, you are expected to:
+        </p>
+        <ul>
+          <li><strong>Recognize styles and periods</strong> from visual features and key terms.</li>
+          <li><strong>Connect art with context</strong> (religion, politics, technology, philosophy).</li>
+          <li><strong>Use precise terminology</strong> (e.g. <em>contrapposto</em>, <em>tenebrism</em>, <em>readymade</em>).</li>
+          <li><strong>Compare</strong> movements in terms of ideas (e.g. humanism vs Counter‑Reformation rhetoric) and style (line vs colour, calm vs drama).</li>
+        </ul>
+        <p>
+          Section A of the exam tests recognition and terminology. Section B requires short essays that:
+        </p>
+        <ul>
+          <li>Answer a <strong>“discuss / explain / compare”</strong> question clearly.</li>
+          <li>Use <strong>named artworks</strong> and link them to <strong>ideas, techniques and historical context</strong>.</li>
+        </ul>
+      </section>
+
+      <!-- CLASSICAL FOUNDATIONS -->
+
+      <section id="page-classical-periods" class="page">
+        <h1>Classical Art 1: Greek Periods &amp; Canon</h1>
+
+        <h2>Chronological Framework</h2>
+        <ul>
+          <li><strong>Archaic period</strong> (9th c. BC – 480 BC)
+            <ul>
+              <li>Birth of independent city‑states (<em>poleis</em>).</li>
+              <li>First large‑scale stone sculpture; experimentation with life‑size human figures.</li>
+            </ul>
+          </li>
+          <li><strong>Classical period</strong> (c. 480 – 323 BC)
+            <ul>
+              <li>479 BC: Pericles defeats Persians → Athens enters its Golden Age.</li>
+              <li>Art reaches a <strong>“zenith”</strong> with humanism, rationality, and the canon of proportions.</li>
+            </ul>
+          </li>
+          <li><strong>Hellenistic period</strong> (c. 323 – 146/30 BC)
+            <ul>
+              <li>323 BC: Alexander the Great dies, his empire fragmented.</li>
+              <li>146 BC: Greece under Roman rule; 30 BC: Ptolemaic Egypt falls to Rome.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>Key Ideas</h2>
+        <h3>Humanism</h3>
+        <p>
+          Classical Greek art places the human being at the centre of the universe. The ideal human body represents both
+          <strong>physical strength</strong> and <strong>rational mind</strong>. This “perfect” human is almost divine.
+        </p>
+
+        <h3>Symmetry, Harmony &amp; Proportion</h3>
+        <ul>
+          <li>Greek artists believe <strong>beauty</strong> is based on mathematical proportion.</li>
+          <li>Pythagorean ratios (2:1, 3:2, 4:3) and later theories (Vitruvius) shape both art and architecture.</li>
+          <li>The human body becomes a model: e.g. head : total body = 1 : 8 in Polykleitos’ canon.</li>
+        </ul>
+
+        <h3>The Vitruvian Man</h3>
+        <p>
+          Leonardo’s drawing “<strong>Vitruvian Man</strong>” (c. 1490) visualizes the ancient Roman architect Vitruvius’ ideas:
+        </p>
+        <ul>
+          <li>Human body fits perfectly into a <strong>circle</strong> and a <strong>square</strong>.</li>
+          <li>Every part has a proportional relation to the whole (face : body = 1:10; head : body = 1:8; torso : body = 1:4).</li>
+          <li>This shows a Renaissance belief: <strong>nature is rationally ordered, so art should imitate that order.</strong></li>
+        </ul>
+      </section>
+
+      <section id="page-archaic-kouroi" class="page">
+        <h1>Archaic Kouroi &amp; Early Greek Sculpture</h1>
+
+        <h2>Egyptian Background</h2>
+        <p>
+          Example: <strong>King Menkaure and Queen</strong>, Old Kingdom Egypt (2490–2472 BC).
+        </p>
+        <ul>
+          <li>Compact, frontal, rigid pose.</li>
+          <li>Aim: convey <strong>eternity and immortality</strong>, not individuality.</li>
+          <li>Formal and standardized for centuries.</li>
+        </ul>
+
+        <h2>Emergence of Kouroi</h2>
+        <p>
+          Early Greek sculptors adapt Egyptian formulas but innovate:
+        </p>
+        <ul>
+          <li><strong>Kouros</strong>, c. 590–580 BC:
+            <ul>
+              <li>Life‑size, freestanding statue of a nude youth.</li>
+              <li>Frontal, symmetrical, one leg advanced (Egyptian influence).</li>
+              <li>Nudity highlights physical perfection of young athletes.</li>
+            </ul>
+          </li>
+          <li>Later kouroi (e.g. Anavysos/Kroisos Kouros) show:
+            <ul>
+              <li>More natural proportions, softer modeling of muscles.</li>
+              <li>The “<strong>Archaic smile</strong>” – suggests life and movement.</li>
+              <li>Used as votive offerings or grave markers, celebrating eternal youthful beauty.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>From Egyptian Eternity to Greek Lifelikeness</h2>
+        <p>
+          The main shift from Egyptian to Archaic Greek sculpture is a move from
+          <strong>timeless, rigid forms</strong> to figures that attempt to look
+          <strong>alive and individual</strong>, even while keeping a formal, frontal pose.
+        </p>
+      </section>
+
+      <section id="page-classical-canon" class="page">
+        <h1>Classical Canon &amp; Contrapposto</h1>
+
+        <h2>Contrapposto</h2>
+        <p>
+          <strong>Contrapposto</strong> is an asymmetrical balance of the body:
+        </p>
+        <ul>
+          <li>Weight rests on one leg (the “engaged” leg), while the other leg is relaxed.</li>
+          <li>Hips and shoulders tilt in opposite directions.</li>
+          <li>Creates a sense of potential movement and natural posture.</li>
+        </ul>
+        <p>
+          <strong>Kritios Boy</strong> (c. 480 BC) is the first known statue fully composed in contrapposto:
+        </p>
+        <ul>
+          <li>Archaic smile disappears; expression is calm and serious.</li>
+          <li>Body looks more anatomically accurate and lifelike.</li>
+        </ul>
+
+        <h2>Polykleitos and the Canon</h2>
+        <p>
+          Sculptor <strong>Polykleitos</strong> formulates a mathematical <strong>Canon</strong> of ideal male proportions in his
+          statue <strong>Doryphoros (Spear Bearer)</strong> (450–440 BC):
+        </p>
+        <ul>
+          <li>Head : total body ≈ 1 : 8.</li>
+          <li>Well‑defined musculature, balanced contrapposto.</li>
+          <li>Embodies Greek ideal:
+            <strong>physical beauty</strong> (athletic body) + <strong>goodness of soul</strong> (rational control) = perfection.</li>
+        </ul>
+        <p>
+          Perfection is considered a <strong>divine quality</strong>, so the ideal male nude links human and divine.
+        </p>
+
+        <h2>Harmony &amp; Symmetry</h2>
+        <p>
+          Classical art values:
+        </p>
+        <ul>
+          <li><strong>Symmetry</strong>: balance of parts, including contrapposto as dynamic symmetry.</li>
+          <li><strong>Harmony</strong>: pleasing proportion between parts and whole, often using numerical ratios.</li>
+        </ul>
+      </section>
+
+      <section id="page-hellenistic-art" class="page">
+        <h1>Hellenistic Art &amp; Pathos</h1>
+
+        <h2>Shift from Ideal Calm to Drama &amp; Emotion</h2>
+        <p>
+          In the <strong>Hellenistic period</strong> (after Alexander the Great), artists:
+        </p>
+        <ul>
+          <li>Violate or exaggerate the Classical canon.</li>
+          <li>Explore <strong>exotic subjects</strong> (barbarians, satyrs, drunkards).</li>
+          <li>Emphasize <strong>drama, emotion, and eroticism</strong> over calm ideal beauty.</li>
+        </ul>
+
+        <h2>Humanized &amp; Moving Figures</h2>
+        <ul>
+          <li><strong>Hermes Carrying the Infant Dionysos</strong> (attributed to Praxiteles):
+            <ul>
+              <li>S‑curve adds sensuality and grace.</li>
+              <li>Gentle interaction between god and baby humanizes the divine.</li>
+            </ul>
+          </li>
+          <li><strong>Apoxyomenos (Scraper)</strong> (Lysippos):
+            <ul>
+              <li>Head : body ≈ 1 : 9 → taller, slenderer body.</li>
+              <li>Arms extended into viewer’s space, body twisting → increased motion.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>Pathos and the “Noble Foe”</h2>
+        <ul>
+          <li><strong>Dying Gaul</strong>:
+            <ul>
+              <li>Shows a barbarian (Gaul) with moustache and neck ring.</li>
+              <li>Portrayed as brave and noble in defeat.</li>
+              <li>Face and posture express intense pain and suffering (<strong>pathos</strong>).</li>
+              <li>Later influences Michelangelo and Baroque sculptors.</li>
+            </ul>
+          </li>
+          <li><strong>Ludovisi Gaul</strong>:
+            <ul>
+              <li>Gallic warrior kills himself and his wife rather than be enslaved.</li>
+              <li>Conveys despair, heroism, and dramatic movement.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>Erotic Sensuality</h2>
+        <p>
+          <strong>Sleeping Satyr (Barberini Faun)</strong>:
+        </p>
+        <ul>
+          <li>Depicts a drunken, sleeping satyr with exposed, twisting body.</li>
+          <li>Classical ideal of rational control is replaced by unconsciousness and sexuality.</li>
+          <li>Nudity is used for <strong>erotic desire</strong>, anticipating Baroque sensuality.</li>
+        </ul>
+      </section>
+
+      <!-- ROMAN ART & EMPIRE -->
+
+      <section id="page-roman-portraiture" class="page">
+        <h1>Roman Art &amp; Portraiture</h1>
+
+        <h2>General Features of Roman Art</h2>
+        <ul>
+          <li>Adopts <strong>Greek idealism</strong> but adds <strong>pragmatism and functionalism</strong>.</li>
+          <li>Oscillates between <strong>realism</strong> (verism) and <strong>idealism</strong>.</li>
+          <li>Serves the <strong>imperial cult</strong>: glorification of emperors and empire.</li>
+          <li>Spreads Classical forms throughout Roman territories → model for later European rulers.</li>
+        </ul>
+
+        <h2>Julius Caesar: Real Portraiture &amp; Propaganda</h2>
+        <ul>
+          <li><strong>Denarius with portrait of Julius Caesar</strong> (44 BC):
+            <ul>
+              <li>First Roman to put his own likeness on coinage.</li>
+              <li>Shows ageing face, lined forehead, realistic features.</li>
+              <li>Purpose: <strong>political propaganda</strong> – promote his achievements across the empire.</li>
+            </ul>
+          </li>
+          <li><strong>Tusculum Portrait</strong>:
+            <ul>
+              <li>Provides likeness of Caesar shortly before his death.</li>
+              <li>Emphasizes physical imperfections (bulging skull, sparse hair).</li>
+              <li>He is shown as a man, not yet deified.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>Augustus: Return to Idealism</h2>
+        <ul>
+          <li><strong>Augustus Bevilacqua</strong>:
+            <ul>
+              <li>Adopts Greek practice of depicting rulers as <strong>ageless and idealized</strong>.</li>
+              <li>Face is serene, elegant, somewhat aloof.</li>
+            </ul>
+          </li>
+          <li><strong>Augustus of Primaporta</strong>:
+            <ul>
+              <li>Full‑length idealized statue; barefoot like a hero or god.</li>
+              <li>Breastplate reliefs emphasize him as <strong>military victor</strong> and bringer of peace (<strong>Pax Romana</strong>).</li>
+              <li>State portraits like this were copied and displayed throughout the empire.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>Hadrian &amp; Later Emperors</h2>
+        <ul>
+          <li><strong>Portrait Bust of Hadrian</strong>:
+            <ul>
+              <li>First Roman emperor to wear a beard, signalling admiration for Greek culture.</li>
+              <li>Modeled after the portrait of <strong>Pericles</strong> by Kresilas; sets a fashion for later emperors.</li>
+            </ul>
+          </li>
+          <li><strong>Equestrian Statue of Marcus Aurelius</strong>:
+            <ul>
+              <li>Bronze equestrian monuments honouring emperors were common civic symbols.</li>
+              <li>The emperor dominates the horse, yet his face appears thoughtful and weary – a philosopher‑king.</li>
+            </ul>
+          </li>
+          <li><strong>Portrait of Caracalla</strong>:
+            <ul>
+              <li>Late imperial portrait with intense, almost paranoid expression.</li>
+              <li>Shows anxiety and aggressiveness, mirroring the instability of the period.</li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+
+      <section id="page-roman-architecture-relief" class="page">
+        <h1>Reliefs, Altars, Arches &amp; Columns</h1>
+
+        <h2>Ara Pacis Augustae (Altar of Augustan Peace)</h2>
+        <p>
+          Built to celebrate <strong>peace restored by Augustus</strong>. Relief friezes show:
+        </p>
+        <ul>
+          <li>Procession of imperial family and officials.</li>
+          <li>Recognizable individuals (e.g. Agrippa, Livia or Julia, Augustus) combined with ideal figures.</li>
+          <li>Inspired by the Athenian <strong>Panathenaic Procession</strong> on the Parthenon frieze, but with more realism and historical specificity.</li>
+        </ul>
+
+        <h2>Arch of Titus</h2>
+        <ul>
+          <li><strong>Triumphal arch</strong> built in Rome (AD 81) to celebrate Emperor Titus’ victory in the Jewish War.</li>
+          <li>Relief of soldiers carrying spoils from the Temple of Jerusalem (e.g., the golden menorah).</li>
+          <li>Figures carved at varying depths create a sense of movement and three‑dimensional space.</li>
+        </ul>
+
+        <h2>Trajan’s Column</h2>
+        <ul>
+          <li>Spiral relief tells the story of <strong>Dacian Wars</strong> in about 150 episodes.</li>
+          <li>Combines narrative history with repetitive images of the emperor as military leader.</li>
+        </ul>
+      </section>
+
+      <section id="page-roman-wall-painting" class="page">
+        <h1>Roman Wall Painting: The Four Styles</h1>
+
+        <h2>First Style – Masonry / Incrustation Style</h2>
+        <ul>
+          <li>Walls covered with plaster and stucco to <strong>imitate coloured marble slabs</strong>.</li>
+          <li>Focus on flat surface; decorative, but no depth illusion.</li>
+          <li>Example: <strong>Samnite House</strong>, Herculaneum (late 2nd c. BC).</li>
+        </ul>
+
+        <h2>Second Style – Architectural / Illusionistic Style</h2>
+        <ul>
+          <li>Painted architecture creates illusion of <strong>extended space</strong> behind the wall.</li>
+          <li>Views of colonnades, gardens, landscapes, and figures seen through fake windows.</li>
+          <li>Looks rational and naturalistic, a <strong>Roman invention</strong> of pictorial depth.</li>
+          <li>Example: <strong>Villa of the Mysteries</strong> (Mysteries of Dionysus Ritual) – stage‑like architecture framing a frieze of life‑size figures.</li>
+        </ul>
+
+        <h2>Third Style – Ornate Style</h2>
+        <ul>
+          <li>Reacting against deep illusion; wall is emphasized as <strong>flat</strong> again.</li>
+          <li>Uniform bright colour background; delicate, fanciful architectural motifs (“jeweller’s architecture”).</li>
+          <li>Small pictures or figures “float” in the centre, with little attempt at spatial depth.</li>
+          <li>Example: <strong>House of the Caccia Antica</strong>, Pompeii.</li>
+        </ul>
+
+        <h2>Fourth Style – Composite Style</h2>
+        <ul>
+          <li>Emerges after earthquake of AD 62; combines elements from Second and Third Styles.</li>
+          <li>Rational architectural frames suggesting depth alternate with floating pictures and decorative panels.</li>
+          <li>Example: <strong>House of the Vettii</strong>, Pompeii – fake architecture plus framed mythological panels.</li>
+        </ul>
+      </section>
+
+      <section id="page-roman-painting-themes" class="page">
+        <h1>Roman Painting Themes &amp; Legacy</h1>
+
+        <h2>Common Themes</h2>
+        <ul>
+          <li><strong>History paintings</strong> – e.g. <em>Brawl in the Pompeii Amphitheater</em> records a real riot during a gladiatorial show.</li>
+          <li><strong>Mythological scenes</strong> – e.g. <em>Polyphemus and Galatea</em>, set in idyllic landscapes.</li>
+          <li><strong>Portraits</strong> – e.g. <em>Portraits of Terentius Neo and his Wife</em>, life‑like and used in election propaganda.</li>
+          <li><strong>Genre scenes</strong> – everyday life such as <em>Sale of Bread</em>.</li>
+          <li><strong>Idyllic / pastoral landscapes</strong> – peaceful rural scenes.</li>
+          <li><strong>Still lifes</strong> – fruit, bread, wine; careful observation of surfaces.</li>
+        </ul>
+
+        <h2>Impact on Later Art</h2>
+        <p>
+          Roman illusionistic painting strongly influences:
+        </p>
+        <ul>
+          <li><strong>Renaissance</strong> perspective and architectural backgrounds.</li>
+          <li><strong>Baroque</strong> stage‑like compositions and dramatic interior decoration.</li>
+          <li>Interest in genre scenes and still life in later European painting traditions.</li>
+        </ul>
+      </section>
+
+      <!-- LATE ANTIQUE & MEDIEVAL (brief placeholders, if needed) -->
+
+      <section id="page-late-antique" class="page">
+        <h1>Late Antique &amp; Early Christian Art</h1>
+        <p>
+          If this content is not heavily emphasized in your course, you can keep this as a light reference.
+          Late Antique art marks a transition from Classical naturalism to the more symbolic style of Christian art.
+        </p>
+      </section>
+
+      <section id="page-byzantine" class="page">
+        <h1>Byzantine Art</h1>
+        <p>
+          Byzantine art favours frontal, iconic images, gold backgrounds, and spiritual symbolism.
+          It continues and transforms Roman imperial imagery into Christian imperial imagery.
+        </p>
+      </section>
+
+      <section id="page-islamic-med" class="page">
+        <h1>Islamic Art of the Mediterranean</h1>
+        <p>
+          Islamic art of this region often emphasizes geometric pattern, calligraphy, and vegetal motifs;
+          figural representation is limited in religious contexts but used in palatial and secular art.
+        </p>
+      </section>
+
+      <!-- RENAISSANCE FOUNDATIONS -->
+
+      <section id="page-renaissance-overview" class="page">
+        <h1>Renaissance in Italy · Overview</h1>
+
+        <h2>What “Renaissance” Means</h2>
+        <ul>
+          <li><strong>Renaissance</strong> = “rebirth” of Classical (Greek and Roman) forms and values.</li>
+          <li>Key concepts:
+            <ul>
+              <li><strong>Classicism</strong> – Classical art as inspiration and model.</li>
+              <li><strong>Humanism</strong> – man‑centered culture; focus on the individual and worldly experience.</li>
+              <li><strong>Rationalism</strong> – scientific, logical approach to nature and space.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>Materials &amp; Techniques</h2>
+        <ul>
+          <li><strong>Oil paint</strong> replaces tempera:
+            <ul>
+              <li>Allows smooth tonal modeling and rich <strong>chiaroscuro</strong>.</li>
+              <li>Dries slowly, so artists can rework surfaces.</li>
+            </ul>
+          </li>
+          <li><strong>Canvas</strong> replaces wood panels in many regions:
+            <ul>
+              <li>Lighter and more flexible – good for large works.</li>
+            </ul>
+          </li>
+          <li><strong>Linear perspective</strong>:
+            <ul>
+              <li>Mathematical system to create illusion of depth.</li>
+              <li>All orthogonals converge at a vanishing point on the horizon.</li>
+            </ul>
+          </li>
+          <li>Compositions use <strong>geometric forms</strong> (pyramids, circles, squares) and careful proportions.</li>
+        </ul>
+      </section>
+
+      <section id="page-early-renaissance" class="page">
+        <h1>Early Renaissance: Masaccio &amp; Donatello</h1>
+
+        <h2>Masaccio (Painting)</h2>
+        <h3>The Virgin and Child (1426)</h3>
+        <ul>
+          <li>Pyramidal composition stabilizes the group.</li>
+          <li>Linear perspective used in the throne; foreshortened halo of Christ.</li>
+          <li>Figures are solid, weighty; cast shadows indicate real human presence.</li>
+        </ul>
+
+        <h3>Tribute Money (Brancacci Chapel, 1424–25)</h3>
+        <ul>
+          <li>Uses <strong>continuous narrative</strong>: three episodes with Peter in one picture.</li>
+          <li>Figures have monumental, sculptural character influenced by Roman sculpture.</li>
+          <li>Linear perspective organizes rational architecture and landscape.</li>
+        </ul>
+
+        <h3>Trinity (Santa Maria Novella, 1426–28)</h3>
+        <ul>
+          <li>Perfect illusion of a deep architectural niche painted on a flat wall.</li>
+          <li>One‑point perspective creates logical space from the viewer’s eye level (looking up into the vault).</li>
+          <li>Provides a visual demonstration of Renaissance rationalism and religious hierarchy.</li>
+        </ul>
+
+        <h2>Donatello (Sculpture)</h2>
+        <h3>David (c. 1430–40)</h3>
+        <ul>
+          <li>First free‑standing male nude statue since antiquity.</li>
+          <li>Biblical hero David shown as a graceful youth after defeating Goliath.</li>
+          <li>Pose and proportions recall Greek nude gods; relaxed <strong>contrapposto</strong>.</li>
+        </ul>
+
+        <h3>Gattamelata (Erasmo da Narni, c. 1445–53)</h3>
+        <ul>
+          <li>Bronze equestrian statue in Padua.</li>
+          <li>Revives Roman equestrian monument tradition.</li>
+          <li>Humanist aim: celebrate individual achievement and character.</li>
+        </ul>
+      </section>
+
+      <section id="page-high-renaissance" class="page">
+        <h1>High Renaissance: Leonardo, Michelangelo, Raphael</h1>
+
+        <h2>Leonardo da Vinci</h2>
+        <h3>Virgin of the Rocks (1483–85)</h3>
+        <ul>
+          <li>Pyramidal grouping of Virgin, Child and angels.</li>
+          <li><strong>Aerial perspective</strong>: landscape fades into bluish haze.</li>
+          <li>No architectural frame; figures integrated with nature.</li>
+        </ul>
+
+        <h3>Last Supper (1495–97)</h3>
+        <ul>
+          <li>Experimental fresco technique with oil and tempera (unfortunately unstable).</li>
+          <li>One‑point perspective; vanishing point located behind Christ’s head (centre of composition and emotion).</li>
+          <li>12 apostles arranged in 4 groups of 3, reacting to Christ’s announcement of betrayal.</li>
+        </ul>
+
+        <h3>Mona Lisa (1503–06)</h3>
+        <ul>
+          <li>Uses <strong>sfumato</strong> (smoky transitions) around face and hands.</li>
+          <li>Aerial perspective unites sitter with mysterious landscape.</li>
+          <li>Focus on psychological depth and subtle expression.</li>
+        </ul>
+
+        <h2>Michelangelo</h2>
+        <h3>Story of Genesis (Sistine Chapel Ceiling, 1508–12)</h3>
+        <ul>
+          <li>Ceiling conceived as illusory architecture with painted pilasters, prophets, sibyls, ancestors of Christ.</li>
+          <li>Central 9 panels narrate Creation, Fall, and story of Noah.</li>
+        </ul>
+
+        <h3>Creation of Adam</h3>
+        <ul>
+          <li>God reaches out to give life to Adam, who is a classical ideal youth.</li>
+          <li>Humanism: man is created in God’s image; human body is glorified.</li>
+        </ul>
+
+        <h3>David (1501–04)</h3>
+        <ul>
+          <li>Colossal marble statue (over 5 m high).</li>
+          <li>Depicts David before battle; tension and concentration within an ideal, balanced body.</li>
+          <li>Embodies harmony between reason and physical power.</li>
+        </ul>
+
+        <h2>Raphael</h2>
+        <h3>Madonna of the Meadow (1506) &amp; Alba Madonna (c. 1510)</h3>
+        <ul>
+          <li>Madonna and Child with young John the Baptist.</li>
+          <li>Calm, elegant figures, subtle chiaroscuro (influenced by Leonardo) and solid forms (influenced by Michelangelo).</li>
+        </ul>
+
+        <h3>School of Athens (1509)</h3>
+        <ul>
+          <li>Fresco in the Pope’s library (Stanza della Segnatura) representing Philosophy.</li>
+          <li>Ancient philosophers (e.g. Plato, Aristotle) depicted as statuesque figures; some with portraits of contemporary artists.</li>
+          <li>Perfect linear perspective and monumental architecture create a harmonious “humanist world”.</li>
+        </ul>
+      </section>
+
+      <section id="page-venetian-renaissance" class="page">
+        <h1>Venetian Renaissance &amp; Colourism</h1>
+
+        <h2>Materials &amp; Environment</h2>
+        <ul>
+          <li>Venice adopts <strong>oil paint</strong> and <strong>canvas</strong> earlier, partly due to humid climate unsuited to fresco.</li>
+          <li>Venetian artists develop <strong>colourism</strong>: building form and texture primarily with colour.</li>
+        </ul>
+
+        <h2>Titian</h2>
+        <h3>Assumption (1516–18)</h3>
+        <ul>
+          <li>Large altarpiece with dynamic composition divided into a circle and a square.</li>
+          <li>Rich golden tones, dominated by red and yellow.</li>
+          <li>Combines rational structure with drama and movement.</li>
+        </ul>
+
+        <h3>Venus before the Mirror (1555)</h3>
+        <ul>
+          <li>Warm, glowing flesh achieved through multiple glazes of oil paint.</li>
+          <li>Glossy gold and intense red emphasizing sensuality.</li>
+        </ul>
+
+        <h2>Veronese</h2>
+        <h3>Banquet in the House of Levi (1573)</h3>
+        <ul>
+          <li>Originally titled <em>Last Supper</em>; authorities forced the name change because of its worldly pageantry.</li>
+          <li>Vast composition, elaborate architecture, rich costumes, and silvery tones.</li>
+        </ul>
+      </section>
+
+      <!-- BAROQUE & EARLY MODERN -->
+
+      <section id="page-baroque-italy" class="page">
+        <h1>Baroque Art in Italy · Caravaggio &amp; Bernini</h1>
+
+        <h2>Historical Context &amp; Style</h2>
+        <ul>
+          <li>Driven by the <strong>Counter‑Reformation</strong> of the Catholic Church.</li>
+          <li>Artists aim to move and persuade viewers emotionally, using:
+            <ul>
+              <li>Realism combined with <strong>theatricality</strong>.</li>
+              <li>Strong contrasts of light and dark.</li>
+              <li>Dynamic compositions with diagonals.</li>
+              <li>Rich colours and intense narratives.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>Caravaggio: Realism &amp; Tenebrism</h2>
+        <ul>
+          <li>Transforms sacred and mythological themes into scenes with <strong>everyday people</strong>, often unidealized and rough.</li>
+          <li>Composition often compressed into the foreground, confronting the viewer with “ugly truth”.</li>
+          <li>Uses <strong>tenebrism</strong> (“dark manner”): deep shadows with spotlight‑like illumination to focus narrative.</li>
+        </ul>
+
+        <h3>Key Works</h3>
+        <ul>
+          <li><strong>Still Life with Basket of Fruit</strong>:
+            <ul>
+              <li>Meticulous realism (Flemish influence); rotting fruit symbolizes transient beauty and life’s brevity.</li>
+            </ul>
+          </li>
+          <li><strong>Boy Bitten by a Lizard</strong>:
+            <ul>
+              <li>Dramatic expression at moment of pain; sharp light‑dark contrast.</li>
+              <li>Reflections in glass and minute detail echo Flemish painting.</li>
+            </ul>
+          </li>
+          <li><strong>Judith Beheading Holofernes</strong>:
+            <ul>
+              <li>Brutal beheading staged like theatre; figures emerge from dark background.</li>
+              <li>Tenebrism heightens drama and psychological tension.</li>
+            </ul>
+          </li>
+          <li><strong>Contarelli Chapel – The Calling and Martyrdom of St. Matthew</strong>:
+            <ul>
+              <li><em>The Calling of St. Matthew</em>: diagonal beam of sacred light singles out Matthew among tax collectors in modern dress.</li>
+              <li><em>The Martyrdom of St. Matthew</em>: stage‑like composition with Michelangelesque nudes and sacred light from above.</li>
+            </ul>
+          </li>
+          <li><strong>Death of the Virgin</strong>:
+            <ul>
+              <li>Shows Virgin as a dead, lowly woman (possibly based on a drowned prostitute) instead of idealized assumption.</li>
+              <li>Rejected by patrons as inappropriate – shows extremity of Caravaggio’s realism.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h3>Caravaggisti: Artemisia Gentileschi</h3>
+        <p>
+          Her <strong>Judith Beheading Holofernes</strong> (Uffizi, c. 1620) follows Caravaggio’s tenebrism:
+        </p>
+        <ul>
+          <li>Heroic female subject; favourite theme.</li>
+          <li>Tight composition focuses all forces on Holofernes’s head; dynamic balance of force and counterforce.</li>
+        </ul>
+
+        <h2>Bernini: Sculptural Theatre</h2>
+        <p>
+          Gian Lorenzo Bernini extends Michelangelo’s legacy by:
+        </p>
+        <ul>
+          <li>Instilling motion and emotion into sculpture.</li>
+          <li>Designing integrated ensembles of sculpture, architecture, and light.</li>
+        </ul>
+
+        <h3>Sculpture Examples</h3>
+        <ul>
+          <li><strong>Rape of Proserpina</strong>:
+            <ul>
+              <li>Narrative at the climax of struggle; Pluto’s fingers press into Proserpina’s flesh.</li>
+              <li>Baroque aim: emotional arousal through sensual realism.</li>
+            </ul>
+          </li>
+          <li><strong>David</strong> (1623–24):
+            <ul>
+              <li>Shows David at the moment of hurling the stone, body twisted, face intensely focused.</li>
+              <li>In contrast:
+                <table>
+                  <tbody><tr><th>Donatello</th><th>Michelangelo</th><th>Bernini</th></tr>
+                  <tr>
+                    <td>Early Renaissance, calm youth after victory.</td>
+                    <td>High Renaissance, calm concentration before battle.</td>
+                    <td>Baroque, dynamic action during battle.</td>
+                  </tr>
+                </tbody></table>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+
+      <section id="page-baroque-ceilings" class="page">
+        <h1>Illusionistic Ceilings &amp; Jesuit Art</h1>
+
+        <h2>Counter‑Reformation &amp; Church Interiors</h2>
+        <ul>
+          <li>Ceiling frescoes turn church vaults into visions of Heaven.</li>
+          <li>Art becomes a powerful tool to glorify and consolidate Catholic Church authority.</li>
+          <li>Scale and height induce awe and emotional submission.</li>
+        </ul>
+
+        <h2>Triumph of the Name of Jesus (Il Gesù, Rome)</h2>
+        <ul>
+          <li>Fresco combined with stucco figures, difficult to distinguish painting from sculpture.</li>
+          <li>Central monogram <strong>IHS</strong> (Name of Jesus) bursts in light, surrounded by tumbling figures.</li>
+          <li>Painted figures are shaded to look solid, intensifying illusion.</li>
+        </ul>
+
+        <h2>Glory of St. Ignatius of Loyola (Sant’Ignazio, Rome)</h2>
+        <ul>
+          <li>Illusion that the roof of the church is opened; Heaven continues the church space.</li>
+          <li>Four corners represent four continents – Europe as ruler; Jesuits sending missionaries worldwide.</li>
+          <li>St. Ignatius received by Christ, celebrating Jesuit contribution to triumph of Catholicism.</li>
+        </ul>
+
+        <h2>Cornaro Chapel &amp; Cathedra Petri</h2>
+        <ul>
+          <li><strong>Cathedra Petri</strong> (Throne of St Peter, St Peter’s Basilica):
+            <ul>
+              <li>Old wooden chair encased in a cloud of golden glory with angels and rays of light.</li>
+              <li>Typical Baroque vision of Heaven: dazzling light and joyous angels.</li>
+            </ul>
+          </li>
+          <li><strong>Cornaro Chapel</strong> (Santa Maria della Vittoria):
+            <ul>
+              <li>Bernini turns the chapel into a theatre of the mystic <strong>Ecstasy of St Teresa</strong>.</li>
+              <li>Hidden window above provides real light on golden rays behind the figures.</li>
+              <li>Members of the Cornaro family appear in sculpted balconies, witnessing the miracle and discussing it, increasing credibility.</li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+
+      <section id="page-neoclassicism" class="page">
+        <h1>Neoclassicism &amp; Enlightenment</h1>
+
+        <h2>Background</h2>
+        <ul>
+          <li><strong>Enlightenment</strong>: reason and knowledge should guide life.</li>
+          <li>Reaction against perceived <strong>insincerity</strong> and <strong>extravagance</strong> of Baroque and Rococo.</li>
+          <li>Excavations of <strong>Pompeii and Herculaneum</strong> revive interest in Classical austerity and virtue.</li>
+        </ul>
+
+        <h2>Jacques‑Louis David</h2>
+        <h3>Oath of the Horatii (1784)</h3>
+        <ul>
+          <li>Roman legend of three Horatii brothers swearing to defend Rome.</li>
+          <li>Doric architecture in background (masculinity, severity).</li>
+          <li>Clear, symmetrical composition; statuesque male figures vs emotional women.</li>
+          <li>Message: <strong>patriotism and sacrifice for the state</strong>.</li>
+        </ul>
+
+        <h3>Lictors Returning to Brutus the Bodies of His Sons (1789)</h3>
+        <ul>
+          <li>Brutus orders execution of his sons for treason against the Republic.</li>
+          <li>Brutus sits in shadow, grieving in silence; women in light, display intense emotion.</li>
+          <li>Again highlights civic virtue and tensions between public duty and private feeling.</li>
+        </ul>
+
+        <h3>Death of Marat (1793)</h3>
+        <ul>
+          <li>Marat, a radical revolutionary, murdered in his bath.</li>
+          <li>Simple, austere setting; strong light on Marat’s idealized, calm body.</li>
+          <li>Combines history with portraiture to turn a controversial figure into a “martyr” of the Revolution.</li>
+        </ul>
+
+        <h3>Intervention of the Sabine Women (1799)</h3>
+        <ul>
+          <li>Sabine women stopping battle between their Roman husbands and Sabine fathers.</li>
+          <li>Heroic nude figures in classical style; theme of reconciliation after political conflict.</li>
+        </ul>
+
+        <h2>Ingres</h2>
+        <ul>
+          <li>Student of David; admires Raphael and Florentine line.</li>
+          <li>Advocates <strong>linearism</strong> (drawing) over colour.</li>
+        </ul>
+
+        <h3>Mademoiselle Caroline Riviere (1806)</h3>
+        <ul>
+          <li>Simple pose, pale palette, strong linear outline.</li>
+          <li>Conveys purity and youthful femininity; minimal decoration.</li>
+        </ul>
+
+        <h3>Madame Moitessier (1856)</h3>
+        <ul>
+          <li>Highly finished, decorative portrait.</li>
+          <li>Flattened forms, elongated limbs; stylized contours and anatomy typical of Ingres.</li>
+        </ul>
+      </section>
+
+      <section id="page-romanticism" class="page">
+        <h1>Romanticism &amp; the Sublime</h1>
+
+        <h2>Key Ideas</h2>
+        <ul>
+          <li>Opposes Neoclassical emphasis on cold reason and order.</li>
+          <li>Values <strong>imagination, intuition, and strong feelings</strong>.</li>
+          <li>Search for <strong>freedom</strong> through subjective emotion and fantasy.</li>
+          <li>Fascination with:
+            <ul>
+              <li>The past and the exotic (Orientalism).</li>
+              <li>Nature as powerful and sometimes terrifying.</li>
+              <li>Dreams, madness, human vices.</li>
+            </ul>
+          </li>
+          <li><strong>Sublime</strong>: aesthetic of awe, terror, and danger that excites and overwhelms.</li>
+        </ul>
+
+        <h2>Goya</h2>
+        <h3>Sleep of Reason Produces Monsters (1799)</h3>
+        <ul>
+          <li>Etching from <em>Los Caprichos</em>.</li>
+          <li>Artist sleeping at desk; bats and owls swarm around.</li>
+          <li>Inscription: when reason sleeps, imagination produces monsters; united with reason, it creates marvels.</li>
+        </ul>
+
+        <h3>Second &amp; Third of May, 1808 (painted 1814)</h3>
+        <ul>
+          <li><strong>Uprising of the Second of May</strong>: chaotic street fight in Madrid against French troops.</li>
+          <li><strong>Executions of the Third of May</strong>: anonymous Spanish rebels executed by firing squad.</li>
+          <li>Central man in white shirt resembles Christ, arms outstretched – a modern martyr.</li>
+          <li>French soldiers are shown as faceless machine, emphasizing brutality.</li>
+        </ul>
+
+        <h3>Severed Limbs (1818)</h3>
+        <ul>
+          <li>Oil sketch of dismembered limbs, related to a murder/cannibalism case.</li>
+          <li>Combines horror with analytical observation, creating “perverse beauty”.</li>
+        </ul>
+
+        <h2>Géricault &amp; Delacroix</h2>
+        <h3>Géricault, Raft of the Medusa (1818–19)</h3>
+        <ul>
+          <li>Depicts aftermath of real shipwreck; 150 people left on a raft, only 10 survived.</li>
+          <li>Reports of cannibalism fascinated the artist.</li>
+          <li>Diagonal composition, dramatic light, and twisting bodies emphasize horror and struggle for survival.</li>
+        </ul>
+
+        <h3>Delacroix, Death of Sardanapalus (1827)</h3>
+        <ul>
+          <li>Inspired by Byron’s poem about Assyrian king who orders destruction of palace and killing of his entourage.</li>
+          <li>Exotic Oriental setting; swirling composition of violence and sensuality.</li>
+        </ul>
+
+        <h3>Liberty Leading the People (1830)</h3>
+        <ul>
+          <li>Commemorates July Revolution in France.</li>
+          <li>Liberty personified as a woman carrying the tricolour flag, leading people over barricades.</li>
+          <li>Blend of allegory (myth) and modern history; Romantic colour and energy.</li>
+        </ul>
+
+        <h2>Friedrich &amp; Turner</h2>
+        <h3>Caspar David Friedrich</h3>
+        <ul>
+          <li><strong>Monk by the Sea</strong>: tiny figure facing a vast expanse of sea and sky – nature as manifestation of God, but also overwhelming.</li>
+          <li><strong>Abbey in the Oak Forest</strong>: funeral procession among ruins; gloomy, nihilistic view that religion does not guarantee salvation.</li>
+        </ul>
+
+        <h3>J. M. W. Turner, Slave Ship (1840)</h3>
+        <ul>
+          <li>Based on case where English traders threw sick slaves overboard to collect insurance.</li>
+          <li>Stormy sea and fiery sunset dominate; drowning bodies are barely visible.</li>
+          <li>Nature’s terrifying power and human cruelty combined in one sublime image.</li>
+        </ul>
+      </section>
+
+      <section id="page-impressionism" class="page">
+        <h1>Impressionism &amp; Neo‑Impressionism</h1>
+
+        <h2>Technical Background</h2>
+        <ul>
+          <li>Industrial paint <strong>tubes</strong> (from 1840s) make oil painting portable and cheap.</li>
+          <li>Artists can work <strong>en plein air</strong> (in open air) and finish works outdoors.</li>
+          <li>Industrial printing and colour studies spread <strong>colour theory</strong>, including complementary colours.</li>
+        </ul>
+
+        <h2>Impressionist Style</h2>
+        <ul>
+          <li>Vibrant colour palette; systematic use of <strong>complementary colours</strong> and coloured shadows.</li>
+          <li>Colours laid side by side (not blended smoothly); human eye mixes them optically.</li>
+          <li>Rapid brushwork, impasto, broken strokes, sketchy finish.</li>
+          <li>Blurry edges and ill‑defined forms → anti‑academic finish.</li>
+        </ul>
+
+        <h2>Redefining Realism</h2>
+        <ul>
+          <li>Realism becomes <strong>optical</strong>, not detailed: capturing fleeting effects of light and atmosphere.</li>
+          <li>Paintings finished outdoors under specific weather conditions.</li>
+          <li>Subjective viewpoint but relatively neutral emotion; emphasis on “here and now” of modern life.</li>
+        </ul>
+
+        <h2>Monet</h2>
+        <ul>
+          <li><strong>Impression: Sunrise</strong> (1872): hazy view of harbour; critic’s insult “Impressionists” becomes group name.</li>
+          <li><strong>Women in the Garden</strong> (1866): painted entirely outdoors; form defined by bright and dark tones.</li>
+          <li><strong>La Grenouillère</strong> (1869, with Renoir): coarse, broken brushstrokes; sunlight and water movement.</li>
+          <li><strong>Gare Saint‑Lazare</strong> (1877): steam, iron, and glass; atmospheric study of modern industry.</li>
+          <li><strong>Poppy Field</strong>, <strong>Autumn Effect at Argenteuil</strong>: refined use of colour, exclusion of black from palette.</li>
+          <li><strong>Waterlilies series</strong> (over 250 paintings, including huge panels at Orangerie):
+            <ul>
+              <li>Use of cobalt violet and other industrial pigments.</li>
+              <li>Late works verge on abstraction; focus on colour and surface of water.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>Manet, Renoir, Degas</h2>
+        <ul>
+          <li><strong>Manet</strong>:
+            <ul>
+              <li><em>Music in the Tuileries Gardens</em>: modern Parisian crowd enjoying music.</li>
+              <li><em>Waitress with Beer Glasses</em>: café as centre of social life.</li>
+            </ul>
+          </li>
+          <li><strong>Renoir</strong>:
+            <ul>
+              <li><em>Ball at the Moulin de la Galette</em>: working‑class dance in open air; interplay of sunlight and gaslight.</li>
+            </ul>
+          </li>
+          <li><strong>Degas</strong>:
+            <ul>
+              <li><em>Dancer with Bouquet, Saluting on Stage</em>: effects of low‑angle stage lighting; coloured shadows.</li>
+              <li><em>Dancer Looking at the Sole of her Right Foot</em> (sculpture): rough texture, fleeting pose, movement captured.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>Neo‑Impressionism (Seurat)</h2>
+        <ul>
+          <li>Critic Fénéon coins term in 1886.</li>
+          <li>Scientific approach to colour and composition; reaction to “sloppiness” of Impressionism.</li>
+          <li>Uses regular dots or strokes (pointillism), clear contours, and carefully balanced compositions.</li>
+        </ul>
+        <p>
+          <strong>A Sunday on La Grande Jatte</strong> (1884–86):
+        </p>
+        <ul>
+          <li>Studio work over two years; no on‑site improvisation.</li>
+          <li>Scene of modern leisure but organized like a frieze; timeless and serene.</li>
+        </ul>
+      </section>
+
+      <section id="page-post-impressionism" class="page">
+        <h1>Post‑Impressionism</h1>
+
+        <h2>General</h2>
+        <p>
+          Term coined by critic <strong>Roger Fry</strong> in 1910. Artists build upon Impressionist colour and brushwork but
+          <strong>recover expressive structure and meaning</strong> through form and colour.
+        </p>
+
+        <h2>Cézanne</h2>
+        <h3>Montagne Sainte‑Victoire with Large Pine (1885–87)</h3>
+        <ul>
+          <li>Simplifies fields into green rectangles, mountains into blue segments.</li>
+          <li>Uses contour lines and patches of colour to suggest volume and solidity.</li>
+          <li>Bridges Impressionism and Cubism by reducing nature to geometric forms.</li>
+        </ul>
+
+        <h3>Card Players (c. 1890–95)</h3>
+        <ul>
+          <li>Figures and objects reduced to cylinders, spheres, trapezoids.</li>
+          <li>Creates a new sense of clarity and weight in everyday scenes.</li>
+        </ul>
+
+        <h2>Gauguin</h2>
+        <h3>Vision After the Sermon (1888)</h3>
+        <ul>
+          <li>Breton women see a religious vision after a sermon.</li>
+          <li>Flat, opaque fields of pure colour (dominant red) separated by dark outlines.</li>
+          <li>Colour itself carries spiritual and emotional meaning.</li>
+        </ul>
+
+        <h2>Van Gogh</h2>
+        <h3>Self‑Portrait with Portrait of Émile Bernard (Les Misérables)</h3>
+        <ul>
+          <li>Shows himself and friend Bernard as poor, struggling artists.</li>
+          <li>Uses strong complementary contrasts (yellow vs blue‑green) to express emotion.</li>
+        </ul>
+
+        <h3>Night Café (1888)</h3>
+        <ul>
+          <li>Interior of a café in Arles, with strange red and green colours.</li>
+          <li>Van Gogh writes that he wants to express “terrible passions” of humanity.</li>
+          <li>Systematic brushstrokes around glowing lamps; perspective and colour create a claustrophobic, hell‑like atmosphere.</li>
+        </ul>
+
+        <h3>Late Works</h3>
+        <ul>
+          <li><strong>Self‑Portraits</strong> with bandaged ear and pipe: show recovery after mental crisis; use strong colour contrasts and broad strokes.</li>
+          <li><strong>Wheatfield with Crows</strong> (1890): dark, turbulent sky, black crows, and divided path suggest inner turmoil and possible contemplation of suicide.</li>
+        </ul>
+      </section>
+
+      <section id="page-modern-art" class="page">
+        <h1>Modern Art: Cubism to Pop Art</h1>
+
+        <h2>General Shift</h2>
+        <ul>
+          <li>20th century sees a <strong>break with traditional academic art</strong>.</li>
+          <li>Photography takes over faithful reproduction of reality.</li>
+          <li>Artists abandon illusionism and naturalism, exploring <strong>abstraction</strong>.</li>
+          <li>Art is redefined; value placed on <strong>creativity, originality, and experiment</strong>.</li>
+        </ul>
+
+        <h2>Cubism (Picasso, Braque)</h2>
+        <ul>
+          <li>Develops in stages: Proto‑Cubism, Analytical Cubism, Synthetic Cubism.</li>
+          <li>Rejects single‑point perspective and traditional modeling.</li>
+          <li>Fragments forms into small planes and recombines them to show multiple viewpoints simultaneously.</li>
+          <li>Evokes the “fourth dimension” (time) through shifting planes.</li>
+        </ul>
+
+        <h3>Key Works</h3>
+        <ul>
+          <li><strong>Picasso, Les Demoiselles d’Avignon</strong> (1907):
+            <ul>
+              <li>Brothel scene; figures inspired by Iberian sculpture, Egyptian art, and African masks.</li>
+              <li>Space and bodies fractured into sharp, angular forms.</li>
+            </ul>
+          </li>
+          <li><strong>Picasso, Portrait of Daniel‑Henry Kahnweiler</strong> (1910):
+            <ul>
+              <li>Analytical Cubism; almost monochrome.</li>
+              <li>Forms analyzed into facets around multiple axes.</li>
+            </ul>
+          </li>
+          <li><strong>Picasso, Still Life with Chair Caning</strong> (1912):
+            <ul>
+              <li>Synthetic Cubism; uses collage (oilcloth printed like chair caning) and a real rope frame.</li>
+              <li>Real objects used to create a painting; painting used to imitate real objects → blurs boundary.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>German Expressionism</h2>
+        <ul>
+          <li>Expresses inner emotions and spiritual concerns using distortion and intense colour.</li>
+          <li>Reacts to social tension, poverty, and looming war.</li>
+        </ul>
+
+        <h3>Examples</h3>
+        <ul>
+          <li><strong>Käthe Kollwitz, Woman with Dead Child</strong> (1903):
+            <ul>
+              <li>Engraving and etching; bodies drastically deformed to express grief.</li>
+              <li>Monochrome, sombre mood.</li>
+            </ul>
+          </li>
+          <li><strong>Ernst Ludwig Kirchner, Berlin Street Scene</strong> (1913):
+            <ul>
+              <li>Figures distorted into jagged forms; garish colours.</li>
+              <li>Reflects decadence and tension in pre‑WWI Berlin.</li>
+            </ul>
+          </li>
+          <li><strong>Kandinsky, Composition VI</strong> (1913):
+            <ul>
+              <li>Abstract painting; uses colour and line like music to convey spiritual meaning.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>Futurism (Italy, Boccioni)</h2>
+        <ul>
+          <li>Italy wants to break from burden of Classical past.</li>
+          <li>Celebrates revolution, war, speed, machines, and modern cities.</li>
+          <li>Sees violence as a way to destroy old culture and create the new.</li>
+        </ul>
+        <ul>
+          <li><strong>States of Mind I: The Farewells</strong> (1911):
+            <ul>
+              <li>Railway station; soldiers leaving for war.</li>
+              <li>Interlocking lines and planes create a sense of motion and tension; influenced by Cubism.</li>
+            </ul>
+          </li>
+          <li><strong>Unique Forms of Continuity in Space</strong> (1913):
+            <ul>
+              <li>Striding figure merging with surrounding space.</li>
+              <li>Mechanical, aerodynamic body; symbolizes speed and modernization.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>De Stijl &amp; Neo‑Plasticism (Mondrian, Rietveld)</h2>
+        <ul>
+          <li>Dutch movement; artists publish the magazine <em>De Stijl</em> (“The Style”).</li>
+          <li><strong>Neo‑Plasticism</strong> aims to express universal harmony through:
+            <ul>
+              <li>Primary colours (red, yellow, blue) and neutrals (white, grey, black).</li>
+              <li>Vertical and horizontal black lines only.</li>
+            </ul>
+          </li>
+        </ul>
+        <ul>
+          <li><strong>Mondrian, Composition with Red, Black, Blue, Yellow and Grey</strong> (1920):
+            <ul>
+              <li>Balanced grid of coloured rectangles; expresses mystical unity of the universe as balanced tensions.</li>
+            </ul>
+          </li>
+          <li><strong>Composition with Yellow, Blue and Red</strong> (1937–42):
+            <ul>
+              <li>Red appears to advance, blue to recede, yellow to expand; spatial effect achieved purely by colour.</li>
+            </ul>
+          </li>
+          <li><strong>Rietveld, Red and Blue Chair</strong> (1918):
+            <ul>
+              <li>Applies De Stijl principles to furniture design (industrial application).</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>Dada (Zurich, New York, Paris)</h2>
+        <ul>
+          <li>Emerges during WWI; artists blame Western faith in rational progress for leading to war.</li>
+          <li>Rejects reason; embraces <strong>chance, absurdity, and provocation</strong>.</li>
+        </ul>
+
+        <ul>
+          <li><strong>Jean Arp, Collage Arranged According to the Laws of Chance</strong>:
+            <ul>
+              <li>Torn paper squares dropped randomly and glued where they land.</li>
+              <li>Introduces <strong>automatism</strong> (automatic process) as creative method.</li>
+            </ul>
+          </li>
+          <li><strong>Marcel Duchamp, Fountain</strong> (1917):
+            <ul>
+              <li>Factory‑made urinal signed “R. Mutt, 1917”.</li>
+              <li>Example of a <strong>readymade</strong>: ordinary object presented as art.</li>
+              <li>Challenges authority and poses question: <strong>Who defines art?</strong></li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>Surrealism</h2>
+        <ul>
+          <li>Influenced by Freud’s psychoanalysis and Dada’s irrationality.</li>
+          <li>Aims to reveal deeper reality of dreams and unconscious.</li>
+          <li>Uses bizarre juxtapositions and symbolic imagery.</li>
+        </ul>
+
+        <ul>
+          <li><strong>Dalí, Persistence of Memory</strong> (1931):
+            <ul>
+              <li>Desert landscape with melting clocks; familiar objects rendered with miniature precision.</li>
+              <li>Presented in unnatural situations to create dream‑like absurdity.</li>
+            </ul>
+          </li>
+          <li><strong>Picasso, Girl Before a Mirror</strong> (1932):
+            <ul>
+              <li>Mirror image represents alter ego; colourful, fragmented forms.</li>
+              <li>Explores psychological complexity of identity.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>Pop Art</h2>
+        <ul>
+          <li>Starts in 1950s (Britain) and 1960s (USA).</li>
+          <li>Responds to <strong>consumer culture, mass media, advertising</strong>.</li>
+          <li>Uses easily recognizable imagery, bright colours, flat style and repetition.</li>
+        </ul>
+
+        <ul>
+          <li><strong>Roy Lichtenstein, Whaam!</strong> (1963):
+            <ul>
+              <li>Blown‑up comic book panel of fighter plane battle.</li>
+              <li>Uses hand‑painted Ben‑Day dots (via metal mesh) to mimic industrial printing.</li>
+            </ul>
+          </li>
+          <li><strong>Andy Warhol, Campbell’s Soup Cans</strong> (1962):
+            <ul>
+              <li>32 canvases of soup cans arranged like supermarket shelves or factory line.</li>
+            </ul>
+          </li>
+          <li><strong>Green Marilyn</strong> &amp; <strong>Mao</strong>:
+            <ul>
+              <li>Silkscreen portraits of celebrities and political leaders.</li>
+              <li>Flat, garish colours; emphasize how media turns people into reproducible icons.</li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+
+      <!-- KEY TERMS & TECHNIQUES -->
+
+      <section id="page-key-terms" class="page">
+        <h1>Glossary · Key Terms</h1>
+
+        <ul>
+          <li><strong>Archaic smile</strong> – slight smile on Archaic Greek statues suggesting life.</li>
+          <li><strong>Contrapposto</strong> – asymmetrical pose where weight is on one leg, creating natural balance and movement.</li>
+          <li><strong>Canon (of Polykleitos)</strong> – system of ideal body proportions (head:body ≈ 1:8) for the perfect male nude.</li>
+          <li><strong>Pathos</strong> – expression of strong emotion and suffering, especially in Hellenistic sculpture.</li>
+          <li><strong>Verism</strong> – extreme realism, often emphasizing age and flaws (Roman portraits).</li>
+          <li><strong>En plein air</strong> – painting outdoors from direct observation.</li>
+          <li><strong>Chiaroscuro</strong> – modeling form with strong contrasts of light and dark.</li>
+          <li><strong>Tenebrism</strong> – extreme chiaroscuro with dark backgrounds and strong spotlighting (Caravaggio).</li>
+          <li><strong>Sfumato</strong> – smoky, blurred transitions between light and shadow (Leonardo).</li>
+          <li><strong>Linear perspective</strong> – mathematical system to represent three‑dimensional space on a flat surface.</li>
+          <li><strong>Aerial perspective</strong> – effect of atmosphere making distant objects lighter and bluer.</li>
+          <li><strong>Illusionism</strong> – creating convincing impressions of real space or objects.</li>
+          <li><strong>Readymade</strong> – ordinary manufactured object designated as art (Duchamp).</li>
+          <li><strong>Collage</strong> – artwork made by assembling paper, photographs or other materials on a surface.</li>
+          <li><strong>Pointillism</strong> – Neo‑Impressionist technique of small colour dots that blend optically.</li>
+          <li><strong>Sublime</strong> – aesthetic category involving awe, terror and vastness (Romanticism).</li>
+          <li><strong>Neo‑Plasticism</strong> – Mondrian’s style using only primary colours and straight lines to express universal harmony.</li>
+        </ul>
+      </section>
+
+      <section id="page-techniques" class="page">
+        <h1>Materials &amp; Techniques</h1>
+
+        <ul>
+          <li><strong>Fresco</strong> – painting on wet plaster; common in Renaissance and Baroque ceilings.</li>
+          <li><strong>Tempera</strong> – pigment mixed with egg yolk; used in medieval and early Renaissance panel painting.</li>
+          <li><strong>Oil paint</strong> – pigment in oil binder; slow‑drying, allows blending and glazing.</li>
+          <li><strong>Canvas</strong> – fabric support, lighter than wooden panel; favoured in Venice and later periods.</li>
+          <li><strong>Bronze</strong> – metal used for durable sculpture (e.g. equestrian statues, Bernini works).</li>
+          <li><strong>Marble</strong> – stone for sculpture and architecture (Greek, Roman, Renaissance, Baroque).</li>
+          <li><strong>Engraving / Etching / Aquatint</strong> – printmaking techniques using metal plates.</li>
+          <li><strong>Silkscreen (screenprint)</strong> – stencil‑based printing used by Pop artists (Warhol).</li>
+          <li><strong>Collage &amp; Assemblage</strong> – combining different materials (paper, objects) in one artwork.</li>
+        </ul>
+      </section>
+
+      <!-- COMPARISON & EXAM HELP -->
+
+      <section id="page-comparisons" class="page">
+        <h1>Comparison Tables (Style vs Style)</h1>
+
+        <h2>Classical vs Hellenistic Greek Sculpture</h2>
+        <table>
+          <tbody><tr>
+            <th></th>
+            <th>Classical</th>
+            <th>Hellenistic</th>
+          </tr>
+          <tr>
+            <td>Ideal</td>
+            <td>Calm, balanced, rational; ideal youth.</td>
+            <td>Drama, strong emotion, exotic subjects.</td>
+          </tr>
+          <tr>
+            <td>Form</td>
+            <td>Canon of proportions; contrapposto.</td>
+            <td>Violated canon; exaggerated poses and musculature.</td>
+          </tr>
+          <tr>
+            <td>Example</td>
+            <td>Polykleitos’ Doryphoros.</td>
+            <td>Dying Gaul, Sleeping Satyr.</td>
+          </tr>
+        </tbody></table>
+
+        <h2>Renaissance vs Baroque Religious Art</h2>
+        <table>
+          <tbody><tr>
+            <th></th>
+            <th>Renaissance</th>
+            <th>Baroque</th>
+          </tr>
+          <tr>
+            <td>Goal</td>
+            <td>Clarity, rational order, humanist ideals.</td>
+            <td>Emotional persuasion, drama, sensory impact.</td>
+          </tr>
+          <tr>
+            <td>Space</td>
+            <td>Stable perspective, geometric composition.</td>
+            <td>Dynamic diagonals, illusionistic space, ceiling openings.</td>
+          </tr>
+          <tr>
+            <td>Light</td>
+            <td>Even, natural light (chiaroscuro).</td>
+            <td>Strong contrasts (tenebrism), hidden light sources.</td>
+          </tr>
+          <tr>
+            <td>Examples</td>
+            <td>Masaccio Trinity, Raphael School of Athens.</td>
+            <td>Caravaggio Contarelli Chapel, Bernini Cornaro Chapel.</td>
+          </tr>
+        </tbody></table>
+
+        <h2>Neoclassicism vs Romanticism</h2>
+        <table>
+          <tbody><tr>
+            <th></th>
+            <th>Neoclassicism</th>
+            <th>Romanticism</th>
+          </tr>
+          <tr>
+            <td>Ideas</td>
+            <td>Reason, civic virtue, order, clarity.</td>
+            <td>Emotion, imagination, individual freedom, sublime.</td>
+          </tr>
+          <tr>
+            <td>Style</td>
+            <td>Clear line, balanced composition, calm figures.</td>
+            <td>Dynamic compositions, strong colour, dramatic scenes.</td>
+          </tr>
+          <tr>
+            <td>Examples</td>
+            <td>David’s Oath of the Horatii.</td>
+            <td>Goya’s Third of May, Delacroix’s Liberty.</td>
+          </tr>
+        </tbody></table>
+
+        <h2>Impressionism vs Post‑Impressionism</h2>
+        <table>
+          <tbody><tr>
+            <th></th>
+            <th>Impressionism</th>
+            <th>Post‑Impressionism</th>
+          </tr>
+          <tr>
+            <td>Focus</td>
+            <td>Light effects, fleeting moments, optical realism.</td>
+            <td>Structure, expressive colour, personal meaning.</td>
+          </tr>
+          <tr>
+            <td>Brushwork</td>
+            <td>Loose, broken, spontaneous, en plein air.</td>
+            <td>More controlled; colour and form shaped to express ideas.</td>
+          </tr>
+          <tr>
+            <td>Examples</td>
+            <td>Monet’s Waterlilies.</td>
+            <td>Cézanne’s Montagne Sainte‑Victoire, Van Gogh’s Night Café.</td>
+          </tr>
+        </tbody></table>
+      </section>
+
+      <section id="page-exam-strategy" class="page">
+        <h1>Exam Strategy &amp; Sample Prompts</h1>
+
+        <h2>Section A: MC / T‑F / Fill‑in‑the‑Blank / Short Questions</h2>
+        <ul>
+          <li>Memorize <strong>key terms</strong> (see Glossary) and be able to match them to:
+            <ul>
+              <li>Definitions (e.g. tenebrism, contrapposto, readymade).</li>
+              <li>Artists and periods (e.g. Caravaggio with Baroque, Mondrian with De Stijl).</li>
+            </ul>
+          </li>
+          <li>Know <strong>cause‑and‑effect</strong>:
+            <ul>
+              <li>Counter‑Reformation → Baroque drama.</li>
+              <li>Industrial paint tubes → Impressionist en plein air.</li>
+              <li>WWI → Dada’s rejection of rationality.</li>
+            </ul>
+          </li>
+          <li>Practice explaining a term in <strong>2–3 clear sentences</strong> with an example.</li>
+        </ul>
+
+        <h2>Section B: Essay Writing</h2>
+        <p>Typical verbs: <strong>discuss / explain / compare</strong>. Always:</p>
+        <ul>
+          <li>Define the key terms and time periods in your first paragraph.</li>
+          <li>Give <strong>at least two artworks per side</strong> when comparing.</li>
+          <li>Link style to <strong>context</strong> (religion, politics, technology, philosophy).</li>
+        </ul>
+
+        <h3>Sample Essay Prompts</h3>
+        <ol>
+          <li>
+            <strong>Compare the aims and styles of Renaissance and Baroque religious art.</strong><br>
+            – Use examples such as Masaccio’s <em>Trinity</em> and Caravaggio’s <em>Calling of St. Matthew</em>, or Michelangelo’s
+            <em>David</em> and Bernini’s <em>David</em>.
+          </li>
+          <li>
+            <strong>Discuss how Neoclassicism and Romanticism reflect different attitudes toward reason and emotion.</strong><br>
+            – Use David’s <em>Oath of the Horatii</em> vs Goya’s <em>Third of May</em> or Delacroix’s <em>Liberty Leading the People</em>.
+          </li>
+          <li>
+            <strong>Explain how Impressionism and Post‑Impressionism changed the concept of realism in art.</strong><br>
+            – Compare Monet’s optical realism with Cézanne’s structural realism and Van Gogh/Gauguin’s expressive colour.
+          </li>
+          <li>
+            <strong>Analyse the impact of new technology on modern art.</strong><br>
+            – Include photography (Cubism’s abstraction), industrial paints (Impressionism), printmaking and media (Pop Art).
+          </li>
+        </ol>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    function toggleSidebar() {
+      const sb = document.getElementById("sidebar");
+      sb.classList.toggle("open");
+    }
+
+    function setActivePage(pageId) {
+      document.querySelectorAll(".page").forEach((p) => {
+        p.classList.toggle("active", p.id === "page-" + pageId);
+      });
+      document.querySelectorAll(".nav-link").forEach((link) => {
+        link.classList.toggle("active", link.dataset.page === pageId);
+      });
+      if (window.innerWidth <= 768) {
+        document.getElementById("sidebar").classList.remove("open");
+      }
+    }
+
+    function navClick(e) {
+      e.preventDefault();
+      const pageId = e.currentTarget.getAttribute("data-page");
+      if (pageId) setActivePage(pageId);
+    }
+
+    document.querySelectorAll(".nav-link").forEach((link) => {
+      link.addEventListener("click", navClick);
+    });
+
+    window.addEventListener("hashchange", () => {
+      const hash = window.location.hash.replace("#page-", "");
+      if (hash) setActivePage(hash);
+    });
+
+    window.addEventListener("load", () => {
+      const hash = window.location.hash.replace("#page-", "");
+      if (hash) setActivePage(hash);
+    });
+  </script>
+
+
+</body></html>
